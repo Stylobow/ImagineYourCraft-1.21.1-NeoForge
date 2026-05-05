@@ -2,11 +2,11 @@ package fr.stylobow.iyc.block.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -54,7 +54,15 @@ public class RodBlock extends Block {
     }
 
     private boolean canConnect(BlockState state) {
-        return state.getBlock() instanceof RodBlock || state.getBlock() instanceof LampBlock || state.isSolidRender(null, null);
+        Block block = state.getBlock();
+
+        if (block instanceof RodBlock || block instanceof LampBlock || block instanceof WallBlock) {
+            return true;
+        }
+        if (block instanceof FlowerBlock || state.is(BlockTags.FLOWERS) || block instanceof BushBlock) {
+            return false;
+        }
+        return state.isSolid();
     }
 
     @Override
@@ -67,8 +75,6 @@ public class RodBlock extends Block {
             shape = Shapes.or(shape, Block.box(7.0D, 0.0D, 7.0D, 9.0D, 14.0D, 9.0D));
         } else if (state.getValue(UP)) {
             shape = Shapes.or(shape, Block.box(7.0D, 14.0D, 7.0D, 9.0D, 16.0D, 9.0D));
-        } else {
-            shape = Shapes.or(shape, Block.box(7.0D, 12.0D, 7.0D, 9.0D, 14.0D, 9.0D));
         }
 
         if (state.getValue(NORTH)) {
