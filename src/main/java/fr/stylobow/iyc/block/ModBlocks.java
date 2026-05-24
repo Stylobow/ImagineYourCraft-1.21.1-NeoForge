@@ -1177,12 +1177,13 @@ public class ModBlocks {
                     .isValidSpawn((state, level, pos, type) -> false)));
 
     public static final DeferredBlock<Block> TRANSPARENT_LIGHT_BLOCK = registerBlock("transparent_light_block",
-            () -> new TransparentLightBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEDROCK)
+            () -> new TransparentLightBlock(BlockBehaviour.Properties.of()
+                    .noCollission()
                     .noOcclusion()
                     .lightLevel(state -> 15)
                     .strength(-1.0F, 3600000.0F)
-                    .noLootTable()
-                    .isValidSpawn((state, level, pos, type) -> false)));
+            )
+    );
 
     public static final DeferredBlock<Block> STEEL_BREWING_STAND = registerBlock("steel_brewing_stand",
             () -> new SteelBrewingStandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BREWING_STAND)));
