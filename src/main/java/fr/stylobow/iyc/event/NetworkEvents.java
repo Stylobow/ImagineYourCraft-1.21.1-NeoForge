@@ -3,53 +3,35 @@ package fr.stylobow.iyc.event;
 import fr.stylobow.iyc.attachment.ModAttachmentTypes;
 import fr.stylobow.iyc.network.SkinSyncPayload;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-@EventBusSubscriber(modid = "iyc", bus = EventBusSubscriber.Bus.MOD)
 public class NetworkEvents {
 
     @SubscribeEvent
-    public static void register(final RegisterPayloadHandlersEvent event) {
-        final PayloadRegistrar registrar = event.registrar("1.0");
+    public static void onPlayerStartTracking(PlayerEvent.StartTracking event) {
+        if (event.getTarget() instanceof ServerPlayer targetedPlayer) {
+            if (event.getEntity() instanceof ServerPlayer regionalPlayer) {
 
-        registrar.playBidirectional(
-                SkinSyncPayload.TYPE,
-                SkinSyncPayload.CODEC,
-                NetworkEvents::onSkinPacketReceived
-        );
-    }
-
-    private static void onSkinPacketReceived(final SkinSyncPayload payload, final IPayloadContext context) {
-        if (context.flow().isServerbound()) {
-            context.enqueueWork(() -> {
-                if (context.player() instanceof ServerPlayer serverPlayer) {
-                    byte[] data = payload.imageData();
-                    int type = payload.cosmeticType();
-
-                    if (type == 0) serverPlayer.setData(ModAttachmentTypes.SKIN_DATA, data);
-                    else if (type == 1) serverPlayer.setData(ModAttachmentTypes.CAPE_DATA, data);
-                    else if (type == 2) serverPlayer.setData(ModAttachmentTypes.HAT_DATA, data);
-
-                    PacketDistributor.sendToPlayersTrackingEntity(serverPlayer, payload);
+                byte[] skinBytes = targetedPlayer.getData(ModAttachmentTypes.SKIN_DATA.get());
+                if (skinBytes != null && skinBytes.length > 0) {
+                    String skin = new String(skinBytes, java.nio.charset.StandardCharsets.UTF_8);
+                    SkinSyncPayload.sendChunked(targetedPlayer.getUUID(), 0, skin, false, regionalPlayer);
                 }
-            });
-        } else {
-            if (FMLEnvironment.dist == Dist.CLIENT) {
-                ClientInnerRunner.process(payload, context);
-            }
-        }
-    }
 
-    private static class ClientInnerRunner {
-        private static void process(SkinSyncPayload payload, IPayloadContext context) {
-            ClientHandler.handleSkinPacket(payload, context);
+                byte[] capeBytes = targetedPlayer.getData(ModAttachmentTypes.CAPE_DATA.get());
+                if (capeBytes != null && capeBytes.length > 0) {
+                    String cape = new String(capeBytes, java.nio.charset.StandardCharsets.UTF_8);
+                    SkinSyncPayload.sendChunked(targetedPlayer.getUUID(), 0, cape, false, regionalPlayer);
+                }
+
+                byte[] hatBytes = targetedPlayer.getData(ModAttachmentTypes.HAT_DATA.get());
+                if (hatBytes != null && hatBytes.length > 0) {
+                    String hat = new String(hatBytes, java.nio.charset.StandardCharsets.UTF_8);
+                    SkinSyncPayload.sendChunked(targetedPlayer.getUUID(), 0, hat, false, regionalPlayer);
+                }
+            }
         }
     }
 }

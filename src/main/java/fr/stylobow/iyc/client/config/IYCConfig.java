@@ -17,32 +17,38 @@ public class IYCConfig {
     public static ConfigData data = new ConfigData();
 
     public static void load() {
-        if (!CONFIG_DIR.exists()) {
-            CONFIG_DIR.mkdirs();
-        }
-        if (CONFIG_FILE.exists()) {
-            try (FileReader reader = new FileReader(CONFIG_FILE)) {
-                ConfigData parsedData = GSON.fromJson(reader, ConfigData.class);
-                if (parsedData != null) {
-                    data = parsedData;
-                } else {
-                    save();
+        try {
+            if (!CONFIG_DIR.exists()) {
+                CONFIG_DIR.mkdirs();
+            }
+            if (CONFIG_FILE.exists()) {
+                try (FileReader reader = new FileReader(CONFIG_FILE)) {
+                    ConfigData parsedData = GSON.fromJson(reader, ConfigData.class);
+                    if (parsedData != null) {
+                        data = parsedData;
+                    } else {
+                        save();
+                    }
                 }
-            } catch (Exception e) {
+            } else {
                 save();
             }
-        } else {
+        } catch (Exception e) {
+            System.err.println("[IYC] Failed to load config, generating default: " + e.getMessage());
             save();
         }
     }
 
-    public static void save() {
-        if (!CONFIG_DIR.exists()) {
-            CONFIG_DIR.mkdirs();
-        }
-        try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
-            GSON.toJson(data, writer);
+    public static synchronized void save() {
+        try {
+            if (!CONFIG_DIR.exists()) {
+                CONFIG_DIR.mkdirs();
+            }
+            try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
+                GSON.toJson(data, writer);
+            }
         } catch (Exception e) {
+            System.err.println("[IYC] Failed to save config: " + e.getMessage());
         }
     }
 

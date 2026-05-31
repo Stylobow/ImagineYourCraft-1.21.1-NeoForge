@@ -7,7 +7,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public class ClientHandler {
     public static void handleSkinPacket(final SkinSyncPayload payload, final IPayloadContext context) {
         context.enqueueWork(() -> {
-            CustomSkinManager.receiveSkinPacket(payload.playerId(), payload.cosmeticType(), payload.imageData());
+            CustomSkinManager.receiveSkinPacket(payload.playerId(), payload.cosmeticType(), payload.textureUrl());
         });
     }
 }

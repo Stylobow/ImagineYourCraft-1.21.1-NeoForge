@@ -5,16 +5,19 @@ import fr.stylobow.iyc.block.ModBlocks;
 import fr.stylobow.iyc.block.entity.ChairRenderer;
 import fr.stylobow.iyc.block.entity.ModBlockEntities;
 import fr.stylobow.iyc.block.entity.ModEntities;
-import fr.stylobow.iyc.config.ClientConfig;
+import fr.stylobow.iyc.client.config.IYCConfig;
+import fr.stylobow.iyc.config.ModConfigs;
 import fr.stylobow.iyc.item.ModArmorMaterials;
 import fr.stylobow.iyc.item.ModCreativeModeTabs;
 import fr.stylobow.iyc.item.ModItems;
+import fr.stylobow.iyc.network.SkinSyncPayload;
 import fr.stylobow.iyc.screen.ModMenuTypes;
 import fr.stylobow.iyc.sound.ModSounds;
 import fr.stylobow.iyc.worldgen.feature.ModFeatures;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
@@ -24,6 +27,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -37,6 +41,9 @@ public class ImagineYourCraft {
 
     public ImagineYourCraft(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::registerPayloads);
+        modEventBus.addListener(this::onConfigLoad);
+
         ModAttachmentTypes.ATTACHMENT_TYPES.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);
 
@@ -56,7 +63,7 @@ public class ImagineYourCraft {
 
         modEventBus.addListener(this::addCreative);
 
-        modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, ModConfigs.SPEC, "iyc-common.toml");
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -296,6 +303,12 @@ public class ImagineYourCraft {
         });
     }
 
+    private void onConfigLoad(final ModConfigEvent event) {
+        if (event.getConfig().getModId().equals(MOD_ID)) {
+            LOGGER.info("[IYC] Configuration successfully loaded!");
+        }
+    }
+
     private void addCreative(BuildCreativeModeTabContentsEvent event) {}
 
     @SubscribeEvent
@@ -306,12 +319,22 @@ public class ImagineYourCraft {
 
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {
-            fr.stylobow.iyc.client.config.IYCConfig.load();
+            IYCConfig.load();
         }
 
         @SubscribeEvent
         static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(ModEntities.CHAIR_ENTITY.get(), ChairRenderer::new);
         }
+    }
+
+    private void registerPayloads(final net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar("iyc").versioned("1.0.0");
+
+        registrar.playBidirectional(
+                SkinSyncPayload.TYPE,
+                SkinSyncPayload.CODEC,
+                SkinSyncPayload::handle
+        );
     }
 }

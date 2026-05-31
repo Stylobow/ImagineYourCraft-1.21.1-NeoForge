@@ -12,11 +12,11 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -75,6 +75,10 @@ public class CustomSkinManager {
         }
     }
 
+    public static void registerRemoteCosmetic(UUID playerId, int cosmeticType, String url) {
+        receiveSkinPacket(playerId, cosmeticType, url);
+    }
+
     public static void applySkin() {
         String path = IYCConfig.data.customSkinPath;
         if (path == null || path.isEmpty()) return;
@@ -105,9 +109,8 @@ public class CustomSkinManager {
                         loadedSkinPath = path;
                         refreshSpecificPlayer(mc, mc.player.getUUID());
 
-                        if (mc.getCurrentServer() == null) {
-                            PacketDistributor.sendToServer(new SkinSyncPayload(mc.player.getUUID(), 0, compress(imageData)));
-                        }
+                        String base64Data = Base64.getEncoder().encodeToString(compress(imageData));
+                        SkinSyncPayload.sendChunked(mc.player.getUUID(), 0, base64Data, true, null);
                     });
                 }
             } catch (Exception e) { e.printStackTrace(); }
@@ -138,7 +141,9 @@ public class CustomSkinManager {
                         playerCapes.put(mc.player.getUUID(), rl);
                         loadedCapePath = path;
                         refreshSpecificPlayer(mc, mc.player.getUUID());
-                        PacketDistributor.sendToServer(new SkinSyncPayload(mc.player.getUUID(), 1, compress(imageData)));
+
+                        String base64Data = Base64.getEncoder().encodeToString(compress(imageData));
+                        SkinSyncPayload.sendChunked(mc.player.getUUID(), 1, base64Data, true, null);
                     });
                 }
             } catch (Exception e) { e.printStackTrace(); }
@@ -168,7 +173,9 @@ public class CustomSkinManager {
                         mc.getTextureManager().register(rl, texture);
                         playerHats.put(mc.player.getUUID(), rl);
                         loadedHatPath = path;
-                        PacketDistributor.sendToServer(new SkinSyncPayload(mc.player.getUUID(), 2, compress(imageData)));
+
+                        String base64Data = Base64.getEncoder().encodeToString(compress(imageData));
+                        SkinSyncPayload.sendChunked(mc.player.getUUID(), 2, base64Data, true, null);
                     });
                 }
             } catch (Exception e) { e.printStackTrace(); }
@@ -184,9 +191,7 @@ public class CustomSkinManager {
         playerSkins.remove(mc.player.getUUID());
         refreshSpecificPlayer(mc, mc.player.getUUID());
 
-        if (mc.getCurrentServer() == null) {
-            PacketDistributor.sendToServer(new SkinSyncPayload(mc.player.getUUID(), 0, new byte[0]));
-        }
+        SkinSyncPayload.sendChunked(mc.player.getUUID(), 0, "RESET", true, null);
     }
 
     public static void resetCape() {
@@ -197,7 +202,8 @@ public class CustomSkinManager {
         if (mc.player == null) return;
         playerCapes.remove(mc.player.getUUID());
         refreshSpecificPlayer(mc, mc.player.getUUID());
-        PacketDistributor.sendToServer(new SkinSyncPayload(mc.player.getUUID(), 1, new byte[0]));
+
+        SkinSyncPayload.sendChunked(mc.player.getUUID(), 1, "RESET", true, null);
     }
 
     public static void resetHat() {
@@ -207,23 +213,31 @@ public class CustomSkinManager {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
         playerHats.remove(mc.player.getUUID());
-        PacketDistributor.sendToServer(new SkinSyncPayload(mc.player.getUUID(), 2, new byte[0]));
+
+        SkinSyncPayload.sendChunked(mc.player.getUUID(), 2, "RESET", true, null);
     }
 
-    public static void receiveSkinPacket(UUID playerId, int cosmeticType, byte[] imageData) {
+    public static void receiveSkinPacket(UUID playerId, int cosmeticType, String textureData) {
         Minecraft mc = Minecraft.getInstance();
         mc.execute(() -> {
-            if (imageData == null || imageData.length == 0) {
+            if (textureData == null || textureData.isEmpty() || "RESET".equals(textureData)) {
                 if (cosmeticType == 1) playerCapes.remove(playerId);
                 else if (cosmeticType == 2) playerHats.remove(playerId);
                 else playerSkins.remove(playerId);
-                if (cosmeticType != 2) refreshSpecificPlayer(mc, playerId);
+
+                refreshSpecificPlayer(mc, playerId);
+                return;
+            }
+
+            if (textureData.startsWith("http")) {
                 return;
             }
 
             try {
-                byte[] decompressed = decompress(imageData);
-                try (InputStream is = new ByteArrayInputStream(decompressed)) {
+                byte[] decoded = Base64.getDecoder().decode(textureData);
+                byte[] rawData = decompress(decoded);
+
+                try (InputStream is = new ByteArrayInputStream(rawData)) {
                     NativeImage image = NativeImage.read(is);
                     DynamicTexture texture = new DynamicTexture(image);
                     String typeStr = cosmeticType == 1 ? "cape" : (cosmeticType == 2 ? "hat" : "skin");
@@ -231,11 +245,11 @@ public class CustomSkinManager {
 
                     mc.getTextureManager().register(rl, texture);
 
-                    if (cosmeticType == 1) playerCapes.put(playerId, rl);
+                    if (cosmeticType == 0) playerSkins.put(playerId, rl);
+                    else if (cosmeticType == 1) playerCapes.put(playerId, rl);
                     else if (cosmeticType == 2) playerHats.put(playerId, rl);
-                    else playerSkins.put(playerId, rl);
 
-                    if (cosmeticType != 2) refreshSpecificPlayer(mc, playerId);
+                    refreshSpecificPlayer(mc, playerId);
                 }
             } catch (Exception e) { e.printStackTrace(); }
         });
@@ -248,11 +262,16 @@ public class CustomSkinManager {
 
         try {
             PlayerSkin originalSkin = mc.getSkinManager().getInsecureSkin(info.getProfile());
-            ResourceLocation finalSkin = playerSkins.getOrDefault(playerId, originalSkin.texture());
-            ResourceLocation finalCape = playerCapes.getOrDefault(playerId, originalSkin.capeTexture());
-            ResourceLocation finalElytra = playerCapes.getOrDefault(playerId, originalSkin.elytraTexture());
 
-            PlayerSkin newSkin = new PlayerSkin(finalSkin, originalSkin.textureUrl(), finalCape, finalElytra, originalSkin.model(), originalSkin.secure());
+            ResourceLocation finalSkin = playerSkins.containsKey(playerId) ? playerSkins.get(playerId) : (originalSkin != null ? originalSkin.texture() : null);
+            ResourceLocation finalCape = playerCapes.containsKey(playerId) ? playerCapes.get(playerId) : (originalSkin != null ? originalSkin.capeTexture() : null);
+            ResourceLocation finalElytra = playerCapes.containsKey(playerId) ? playerCapes.get(playerId) : (originalSkin != null ? originalSkin.elytraTexture() : null);
+
+            PlayerSkin.Model model = (originalSkin != null) ? originalSkin.model() : PlayerSkin.Model.WIDE;
+            boolean secure = (originalSkin != null) && originalSkin.secure();
+            String url = (originalSkin != null) ? originalSkin.textureUrl() : "";
+
+            PlayerSkin newSkin = new PlayerSkin(finalSkin, url, finalCape, finalElytra, model, secure);
 
             for (Field field : PlayerInfo.class.getDeclaredFields()) {
                 if (field.getType() == Supplier.class) {
@@ -265,7 +284,13 @@ public class CustomSkinManager {
                     break;
                 }
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ResourceLocation getCapeTexture(UUID playerId) {
+        return playerCapes.get(playerId);
     }
 
     public static ResourceLocation getHatTexture(UUID playerId) {

@@ -1,37 +1,40 @@
 package fr.stylobow.iyc.attachment;
 
+import fr.stylobow.iyc.ImagineYourCraft;
 import com.mojang.serialization.Codec;
-import net.minecraft.network.codec.ByteBufCodecs;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-
-import java.nio.ByteBuffer;
-import java.util.function.Supplier;
 
 public class ModAttachmentTypes {
 
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
-            DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, "iyc");
+            DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ImagineYourCraft.MOD_ID);
 
-    public static final Supplier<AttachmentType<byte[]>> SKIN_DATA = ATTACHMENT_TYPES.register(
-            "skin_data", () -> AttachmentType.builder(() -> new byte[0])
-                    .serialize(Codec.BYTE_BUFFER.xmap(ByteBuffer::array, ByteBuffer::wrap))
-                    .sync(ByteBufCodecs.BYTE_ARRAY)
-                    .copyOnDeath()
-                    .build());
+    public static final java.util.function.Supplier<net.neoforged.neoforge.attachment.AttachmentType<byte[]>> SKIN_DATA = ATTACHMENT_TYPES.register(
+            "skin_data",
+            () -> net.neoforged.neoforge.attachment.AttachmentType.builder(() -> new byte[0])
+                    .serialize(com.mojang.serialization.Codec.BYTE_BUFFER.xmap(java.nio.ByteBuffer::array, java.nio.ByteBuffer::wrap))
+                    .build()
+    );
 
-    public static final Supplier<AttachmentType<byte[]>> CAPE_DATA = ATTACHMENT_TYPES.register(
-            "cape_data", () -> AttachmentType.builder(() -> new byte[0])
-                    .serialize(Codec.BYTE_BUFFER.xmap(ByteBuffer::array, ByteBuffer::wrap))
-                    .sync(ByteBufCodecs.BYTE_ARRAY)
-                    .copyOnDeath()
-                    .build());
+    public static final java.util.function.Supplier<net.neoforged.neoforge.attachment.AttachmentType<byte[]>> CAPE_DATA = ATTACHMENT_TYPES.register(
+            "cape_data",
+            () -> net.neoforged.neoforge.attachment.AttachmentType.builder(() -> new byte[0])
+                    .serialize(com.mojang.serialization.Codec.BYTE_BUFFER.xmap(java.nio.ByteBuffer::array, java.nio.ByteBuffer::wrap))
+                    .build()
+    );
 
-    public static final Supplier<AttachmentType<byte[]>> HAT_DATA = ATTACHMENT_TYPES.register(
-            "hat_data", () -> AttachmentType.builder(() -> new byte[0])
-                    .serialize(Codec.BYTE_BUFFER.xmap(ByteBuffer::array, ByteBuffer::wrap))
-                    .sync(ByteBufCodecs.BYTE_ARRAY)
-                    .copyOnDeath()
-                    .build());
+    public static final java.util.function.Supplier<net.neoforged.neoforge.attachment.AttachmentType<byte[]>> HAT_DATA = ATTACHMENT_TYPES.register(
+            "hat_data",
+            () -> net.neoforged.neoforge.attachment.AttachmentType.builder(() -> new byte[0])
+                    .serialize(com.mojang.serialization.Codec.BYTE_BUFFER.xmap(java.nio.ByteBuffer::array, java.nio.ByteBuffer::wrap))
+                    .build()
+    );
+
+    public static void register(IEventBus eventBus) {
+        ATTACHMENT_TYPES.register(eventBus);
+    }
 }

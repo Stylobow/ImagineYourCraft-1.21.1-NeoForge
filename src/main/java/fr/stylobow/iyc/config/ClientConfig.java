@@ -1,25 +1,19 @@
 package fr.stylobow.iyc.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class ClientConfig {
 
     public static final ModConfigSpec SPEC;
-    public static final ClientConfig CLIENT;
 
-    public final ModConfigSpec.BooleanValue showKeystrokes;
-    public final ModConfigSpec.BooleanValue showCps;
-    public final ModConfigSpec.EnumValue<HudPosition> position;
-    public final ModConfigSpec.EnumValue<HudColor> textColor;
+    public static final ModConfigSpec.BooleanValue showKeystrokes;
+    public static final ModConfigSpec.BooleanValue showCps;
+    public static final ModConfigSpec.EnumValue<HudPosition> position;
+    public static final ModConfigSpec.EnumValue<HudColor> textColor;
 
     static {
-        final Pair<ClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ClientConfig::new);
-        SPEC = specPair.getRight();
-        CLIENT = specPair.getLeft();
-    }
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
-    private ClientConfig(ModConfigSpec.Builder builder) {
         builder.push("keystrokes_hud");
 
         showKeystrokes = builder
@@ -39,6 +33,8 @@ public class ClientConfig {
                 .defineEnum("color", HudColor.WHITE);
 
         builder.pop();
+
+        SPEC = builder.build();
     }
 
     public enum HudPosition {

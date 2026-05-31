@@ -1,12 +1,16 @@
 package fr.stylobow.iyc.screen;
 
 import fr.stylobow.iyc.client.config.IYCConfig;
+import fr.stylobow.iyc.client.skin.CustomSkinManager;
+import fr.stylobow.iyc.network.SkinSyncPayload;
+import fr.stylobow.iyc.util.SkinUploader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
@@ -61,19 +65,19 @@ public class CustomScreen extends Screen {
         this.addRenderableWidget(Button.builder(Component.translatable("iyc.button.change_skin"), (btn) -> openFileChooser(0))
                 .bounds(centerX - 155, 115, btnW, btnH).build());
 
-        this.addRenderableWidget(Button.builder(Component.translatable("iyc.button.reset_skin"), (btn) -> fr.stylobow.iyc.client.skin.CustomSkinManager.resetSkin())
+        this.addRenderableWidget(Button.builder(Component.translatable("iyc.button.reset_skin"), (btn) -> CustomSkinManager.resetSkin())
                 .bounds(centerX + 5, 115, btnW, btnH).build());
 
         this.addRenderableWidget(Button.builder(Component.translatable("iyc.button.change_cape"), (btn) -> openFileChooser(1))
                 .bounds(centerX - 155, 140, btnW, btnH).build());
 
-        this.addRenderableWidget(Button.builder(Component.translatable("iyc.button.reset_cape"), (btn) -> fr.stylobow.iyc.client.skin.CustomSkinManager.resetCape())
+        this.addRenderableWidget(Button.builder(Component.translatable("iyc.button.reset_cape"), (btn) -> CustomSkinManager.resetCape())
                 .bounds(centerX + 5, 140, btnW, btnH).build());
 
         this.addRenderableWidget(Button.builder(Component.translatable("iyc.button.change_hat"), (btn) -> openFileChooser(2))
                 .bounds(centerX - 155, 165, btnW, btnH).build());
 
-        this.addRenderableWidget(Button.builder(Component.translatable("iyc.button.reset_hat"), (btn) -> fr.stylobow.iyc.client.skin.CustomSkinManager.resetHat())
+        this.addRenderableWidget(Button.builder(Component.translatable("iyc.button.reset_hat"), (btn) -> CustomSkinManager.resetHat())
                 .bounds(centerX + 5, 165, btnW, btnH).build());
 
         this.addRenderableWidget(Button.builder(Component.translatable("iyc.menu.back"), (btn) -> this.onClose())
@@ -91,8 +95,8 @@ public class CustomScreen extends Screen {
                 String result = TinyFileDialogs.tinyfd_openFileDialog(title, "", filters, "Images PNG", false);
 
                 if (result != null) {
+                    File file = new File(result);
                     try {
-                        File file = new File(result);
                         BufferedImage bimg = ImageIO.read(file);
                         if (bimg == null) throw new Exception();
 
@@ -104,13 +108,13 @@ public class CustomScreen extends Screen {
 
                         if (!isValidWidth || !isValidHeight) {
                             if (this.minecraft != null) {
-                                this.minecraft.execute(() -> this.errorMessage = "Format Invalide (" + w + "x" + h + ") !");
+                                this.minecraft.execute(() -> this.errorMessage = "Invalid format (" + w + "x" + h + ") !");
                             }
                             return;
                         }
                     } catch (Exception e) {
                         if (this.minecraft != null) {
-                            this.minecraft.execute(() -> this.errorMessage = "Fichier image corrompu !");
+                            this.minecraft.execute(() -> this.errorMessage = "Corrupted image file!");
                         }
                         return;
                     }
@@ -123,9 +127,20 @@ public class CustomScreen extends Screen {
                     if (this.minecraft != null) {
                         this.minecraft.execute(() -> {
                             this.errorMessage = "";
-                            if (cosmeticType == 1) fr.stylobow.iyc.client.skin.CustomSkinManager.applyCape();
-                            else if (cosmeticType == 2) fr.stylobow.iyc.client.skin.CustomSkinManager.applyHat();
-                            else fr.stylobow.iyc.client.skin.CustomSkinManager.applySkin();
+                            if (cosmeticType == 2) {
+                                CustomSkinManager.applyHat();
+                            } else {
+                                if (cosmeticType == 1) CustomSkinManager.applyCape();
+                                else CustomSkinManager.applySkin();
+
+                                SkinUploader.uploadSkin(file).thenAccept(url -> {
+                                    if (this.minecraft != null) {
+                                        this.minecraft.execute(() -> this.errorMessage = "");
+                                    }
+                                }).exceptionally(e -> {
+                                    return null;
+                                });
+                            }
                         });
                     }
                 }

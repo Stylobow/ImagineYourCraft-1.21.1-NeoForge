@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = ImagineYourCraft.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class PlayerSyncEvents {
@@ -20,19 +19,23 @@ public class PlayerSyncEvents {
             if (event.getEntity() instanceof ServerPlayer trackingPlayer) {
 
                 if (trackedPlayer instanceof ServerPlayer targetServerPlayer) {
-                    byte[] skin = targetServerPlayer.getData(ModAttachmentTypes.SKIN_DATA);
-                    if (skin != null && skin.length > 0) {
-                        PacketDistributor.sendToPlayer(trackingPlayer, new SkinSyncPayload(targetServerPlayer.getUUID(), 0, skin));
+
+                    byte[] skinBytes = targetServerPlayer.getData(ModAttachmentTypes.SKIN_DATA);
+                    if (skinBytes != null && skinBytes.length > 0) {
+                        String skin = new String(skinBytes, java.nio.charset.StandardCharsets.UTF_8);
+                        SkinSyncPayload.sendChunked(targetServerPlayer.getUUID(), 0, skin, false, trackingPlayer);
                     }
 
-                    byte[] cape = targetServerPlayer.getData(ModAttachmentTypes.CAPE_DATA);
-                    if (cape != null && cape.length > 0) {
-                        PacketDistributor.sendToPlayer(trackingPlayer, new SkinSyncPayload(targetServerPlayer.getUUID(), 1, cape));
+                    byte[] capeBytes = targetServerPlayer.getData(ModAttachmentTypes.CAPE_DATA);
+                    if (capeBytes != null && capeBytes.length > 0) {
+                        String cape = new String(capeBytes, java.nio.charset.StandardCharsets.UTF_8);
+                        SkinSyncPayload.sendChunked(targetServerPlayer.getUUID(), 1, cape, false, trackingPlayer);
                     }
 
-                    byte[] hat = targetServerPlayer.getData(ModAttachmentTypes.HAT_DATA);
-                    if (hat != null && hat.length > 0) {
-                        PacketDistributor.sendToPlayer(trackingPlayer, new SkinSyncPayload(targetServerPlayer.getUUID(), 2, hat));
+                    byte[] hatBytes = targetServerPlayer.getData(ModAttachmentTypes.HAT_DATA);
+                    if (hatBytes != null && hatBytes.length > 0) {
+                        String hat = new String(hatBytes, java.nio.charset.StandardCharsets.UTF_8);
+                        SkinSyncPayload.sendChunked(targetServerPlayer.getUUID(), 2, hat, false, trackingPlayer);
                     }
                 }
             }
