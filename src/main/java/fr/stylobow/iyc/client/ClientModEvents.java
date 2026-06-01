@@ -5,7 +5,6 @@ import fr.stylobow.iyc.block.entity.ModBlockEntities;
 import fr.stylobow.iyc.block.entity.ModEntities;
 import fr.stylobow.iyc.client.renderer.BombeRenderer;
 import fr.stylobow.iyc.client.renderer.FloatingItemLayer;
-import fr.stylobow.iyc.client.renderer.RainbowBlockRenderer;
 import fr.stylobow.iyc.screen.BarrelScreen;
 import fr.stylobow.iyc.screen.ModMenuTypes;
 import net.minecraft.client.model.PlayerModel;
@@ -23,7 +22,6 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModBlockEntities.RAINBOW_BE.get(), RainbowBlockRenderer::new);
         event.registerEntityRenderer(ModEntities.BOMBE.get(), BombeRenderer::new);
     }
 

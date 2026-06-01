@@ -328,10 +328,5 @@ public class ColorEvents {
         event.register((stack, tintIndex) -> C_GREEN, ModBlocks.GREEN_BLOB.get());
         event.register((stack, tintIndex) -> C_RED, ModBlocks.RED_BLOB.get());
         event.register((stack, tintIndex) -> C_BLACK, ModBlocks.BLACK_BLOB.get());
-
-        event.register((stack, tintIndex) -> {
-            float hue = (System.currentTimeMillis() % 5000L) / 5000.0f;
-            return Color.HSBtoRGB(hue, 0.8f, 0.8f);
-        }, ModBlocks.RAINBOW_IRON_BLOCK.get());
     }
 }

@@ -16,10 +16,6 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, ImagineYourCraft.MOD_ID);
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RainbowBlockEntity>> RAINBOW_BE =
-            BLOCK_ENTITIES.register("rainbow_be", () ->
-                    BlockEntityType.Builder.of(RainbowBlockEntity::new, ModBlocks.RAINBOW_IRON_BLOCK.get()).build(null));
-
     public static final Supplier<BlockEntityType<BarrelBlockEntity>> BARREL_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("barrel", () -> BlockEntityType.Builder.of(
                     BarrelBlockEntity::new,

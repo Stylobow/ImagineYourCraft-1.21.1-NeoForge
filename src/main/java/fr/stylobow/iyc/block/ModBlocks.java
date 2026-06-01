@@ -1060,13 +1060,6 @@ public class ModBlocks {
     public static final DeferredBlock<Block> GREEN_IRON_BLOCK = registerBlock("green_iron_block", () -> new Block(getIronBlockProperties()));
     public static final DeferredBlock<Block> RED_IRON_BLOCK = registerBlock("red_iron_block", () -> new Block(getIronBlockProperties()));
     public static final DeferredBlock<Block> BLACK_IRON_BLOCK = registerBlock("black_iron_block", () -> new Block(getIronBlockProperties()));
-    public static final DeferredBlock<Block> RAINBOW_IRON_BLOCK = registerBlock("rainbow_iron_block",
-            () -> new RainbowBlock(BlockBehaviour.Properties.of()
-                    .strength(5.0F, 6.0F)
-                    .sound(SoundType.METAL)
-                    .noOcclusion()
-            )
-    );
 
     private static BlockBehaviour.Properties getColorLightProperties() {
         return BlockBehaviour.Properties.of()
