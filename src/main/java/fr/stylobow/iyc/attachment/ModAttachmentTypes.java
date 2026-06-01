@@ -34,6 +34,9 @@ public class ModAttachmentTypes {
                     .build()
     );
 
+    public static final java.util.function.Supplier<AttachmentType<Boolean>> TARDIS_VISIBLE =
+            ATTACHMENT_TYPES.register("tardis_visible", () -> AttachmentType.builder(() -> true).serialize(Codec.BOOL).copyOnDeath().build());
+
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);
     }

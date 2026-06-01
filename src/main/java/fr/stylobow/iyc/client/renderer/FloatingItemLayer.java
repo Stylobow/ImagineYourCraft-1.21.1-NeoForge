@@ -4,16 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import fr.stylobow.iyc.attachment.ModAttachmentTypes;
-import fr.stylobow.iyc.item.ModItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.UUID;
 
@@ -27,7 +23,7 @@ public class FloatingItemLayer extends RenderLayer<AbstractClientPlayer, PlayerM
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (player.getUUID().equals(DEV_UUID) && !player.isInvisible()) {
+        if (player.getUUID().equals(DEV_UUID) && !player.isInvisible() && player.getData(ModAttachmentTypes.TARDIS_VISIBLE)) {
             poseStack.pushPose();
 
             poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));

@@ -2,7 +2,8 @@ package fr.stylobow.iyc.screen;
 
 import fr.stylobow.iyc.client.config.IYCConfig;
 import fr.stylobow.iyc.client.skin.CustomSkinManager;
-import fr.stylobow.iyc.network.SkinSyncPayload;
+import fr.stylobow.iyc.attachment.ModAttachmentTypes;
+import fr.stylobow.iyc.network.ToggleTardisPacket;
 import fr.stylobow.iyc.util.SkinUploader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,9 +19,11 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.UUID;
 
 public class CustomScreen extends Screen {
 
+    private static final UUID DEV_UUID = UUID.fromString("ef3a9cb5-3544-4ba3-b0f5-2fe19d2363be");
     private String errorMessage = "";
 
     public CustomScreen(Component title) {
@@ -79,6 +82,17 @@ public class CustomScreen extends Screen {
 
         this.addRenderableWidget(Button.builder(Component.translatable("iyc.button.reset_hat"), (btn) -> CustomSkinManager.resetHat())
                 .bounds(centerX + 5, 165, btnW, btnH).build());
+
+        if (this.minecraft != null && this.minecraft.player != null && this.minecraft.player.getUUID().equals(DEV_UUID)) {
+            this.addRenderableWidget(Button.builder(getTardisText(), (btn) -> {
+                PacketDistributor.sendToServer(new ToggleTardisPacket());
+                if (this.minecraft.player != null) {
+                    boolean currentLocal = this.minecraft.player.getData(ModAttachmentTypes.TARDIS_VISIBLE);
+                    this.minecraft.player.setData(ModAttachmentTypes.TARDIS_VISIBLE, !currentLocal);
+                }
+                this.minecraft.execute(() -> btn.setMessage(getTardisText()));
+            }).bounds(centerX - 75, 210, btnW, btnH).build());
+        }
 
         this.addRenderableWidget(Button.builder(Component.translatable("iyc.menu.back"), (btn) -> this.onClose())
                 .bounds(centerX - 100, this.height - 29, 200, 20).build());
@@ -166,6 +180,15 @@ public class CustomScreen extends Screen {
 
     private Component getColorText() {
         return Component.translatable("iyc.hud.color", Component.translatable("iyc.color." + IYCConfig.data.keystrokesColor.name().toLowerCase()));
+    }
+
+    private Component getTardisText() {
+        boolean isOn = true;
+        if (this.minecraft != null && this.minecraft.player != null) {
+            isOn = this.minecraft.player.getData(ModAttachmentTypes.TARDIS_VISIBLE);
+        }
+        Component state = Component.literal(isOn ? "ON" : "OFF").withStyle(isOn ? ChatFormatting.GREEN : ChatFormatting.RED);
+        return Component.literal("TARDIS: ").withStyle(ChatFormatting.BLUE).append(state);
     }
 
     @Override

@@ -11,6 +11,8 @@ import fr.stylobow.iyc.item.ModArmorMaterials;
 import fr.stylobow.iyc.item.ModCreativeModeTabs;
 import fr.stylobow.iyc.item.ModItems;
 import fr.stylobow.iyc.network.SkinSyncPayload;
+import fr.stylobow.iyc.network.SyncTardisStatusPacket;
+import fr.stylobow.iyc.network.ToggleTardisPacket;
 import fr.stylobow.iyc.screen.ModMenuTypes;
 import fr.stylobow.iyc.sound.ModSounds;
 import fr.stylobow.iyc.worldgen.feature.ModFeatures;
@@ -335,6 +337,18 @@ public class ImagineYourCraft {
                 SkinSyncPayload.TYPE,
                 SkinSyncPayload.CODEC,
                 SkinSyncPayload::handle
+        );
+
+        registrar.playToServer(
+                ToggleTardisPacket.TYPE,
+                ToggleTardisPacket.STREAM_CODEC,
+                ToggleTardisPacket::handle
+        );
+
+        registrar.playToClient(
+                SyncTardisStatusPacket.TYPE,
+                SyncTardisStatusPacket.STREAM_CODEC,
+                SyncTardisStatusPacket::handle
         );
     }
 }
