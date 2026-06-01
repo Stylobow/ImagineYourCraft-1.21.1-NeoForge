@@ -116,25 +116,25 @@ public class LampBlock extends Block {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        VoxelShape shape = Block.box(5.0D, 4.0D, 5.0D, 11.0D, 12.0D, 11.0D);
+        VoxelShape shape = Block.box(5.0D, 4.0D, 5.0D, 11.0D, 14D, 11.0D);
 
         if (state.getValue(DOWN)) {
-            shape = Shapes.or(shape, Block.box(7.0D, 0.0D, 7.0D, 9.0D, 4.0D, 9.0D));
+            shape = Shapes.or(shape, Block.box(5.0D, 0.0D, 5.0D, 11.0D, 4D, 11.0D));
         }
         if (state.getValue(UP)) {
-            shape = Shapes.or(shape, Block.box(7.0D, 12.0D, 7.0D, 9.0D, 16.0D, 9.0D));
+            shape = Shapes.or(shape, Block.box(5.0D, 14.0D, 5.0D, 11.0D, 16D, 11.0D));
         }
         if (state.getValue(NORTH)) {
-            shape = Shapes.or(shape, Block.box(7.0D, 14.0D, 0.0D, 9.0D, 16.0D, 7.0D));
+            shape = Shapes.or(shape, Block.box(7.0D, 14.0D, 0.0D, 9.0D, 16.0D, 9.0D));
         }
         if (state.getValue(SOUTH)) {
-            shape = Shapes.or(shape, Block.box(7.0D, 14.0D, 9.0D, 9.0D, 16.0D, 16.0D));
+            shape = Shapes.or(shape, Block.box(7.0D, 14.0D, 7.0D, 9.0D, 16.0D, 16.0D));
         }
         if (state.getValue(WEST)) {
-            shape = Shapes.or(shape, Block.box(0.0D, 14.0D, 7.0D, 7.0D, 16.0D, 9.0D));
+            shape = Shapes.or(shape, Block.box(0.0D, 14.0D, 7.0D, 9.0D, 16.0D, 9.0D));
         }
         if (state.getValue(EAST)) {
-            shape = Shapes.or(shape, Block.box(9.0D, 14.0D, 7.0D, 16.0D, 16.0D, 9.0D));
+            shape = Shapes.or(shape, Block.box(7.0D, 14.0D, 7.0D, 16.0D, 16.0D, 9.0D));
         }
 
         return shape;
