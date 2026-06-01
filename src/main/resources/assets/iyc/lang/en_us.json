@@ -32,6 +32,10 @@
   "iyc.error.format": "Invalid Format (%s)!",
   "iyc.error.corrupt": "Corrupted image file!",
 
+  "entity.iyc.bolt": "Bolt",
+  "entity.iyc.chair_entity": "Chair",
+  "entity.iyc.bombe": "Nuke",
+
   "iyc.music.title": "Music",
   "iyc.music.disclaimer": "This music does not belong to the mod, it is a public web audio stream.",
   "iyc.music.stop": "Stop",
@@ -370,6 +374,7 @@
   "block.iyc.slate_slab": "Slate Slab",
   "block.iyc.jumpbox": "Jump box",
   "block.iyc.log_stairs": "Log Stairs",
+  "block.iyc.bombe": "Nuke",
   "block.iyc.glowstone_stairs": "Glowstone Stairs",
   "block.iyc.iron_stairs": "Iron Stairs",
   "block.iyc.obsidian_stairs": "Obsidian Stairs",

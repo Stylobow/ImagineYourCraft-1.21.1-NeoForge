@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "down": "minecraft:block/tnt_bottom",
+    "up": "minecraft:block/tnt_top",
+    "north": "iyc:block/bombe_side",
+    "east": "iyc:block/bombe_side",
+    "south": "iyc:block/bombe_side",
+    "west": "iyc:block/bombe_side",
+    "particle": "iyc:block/bombe_side"
+  },
+  "render_type": "solid"
+}

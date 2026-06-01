@@ -252,6 +252,12 @@ public class ModBlocks {
             )
     );
 
+    public static final DeferredBlock<Block> BOMBE = registerBlock("bombe",
+            () -> new BombeBlock(BlockBehaviour.Properties.of()
+                    .destroyTime(0.0F)
+                    .sound(SoundType.METAL)
+            ));
+
     public static final DeferredBlock<Block> HOPS_CROP = BLOCKS.register("hops_crop",
             () -> new HopsCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).noOcclusion().noCollission()));
 

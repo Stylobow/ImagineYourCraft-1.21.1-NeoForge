@@ -3,6 +3,7 @@ package fr.stylobow.iyc.block.entity;
 import fr.stylobow.iyc.ImagineYourCraft;
 import fr.stylobow.iyc.block.entity.custom.ChairEntity;
 import fr.stylobow.iyc.entity.BoltEntity;
+import fr.stylobow.iyc.entity.PrimedBombe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -27,5 +28,15 @@ public class ModEntities {
                     .clientTrackingRange(4)
                     .updateInterval(20)
                     .build("bolt"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<PrimedBombe>> BOMBE = ENTITIES.register("bombe",
+            () -> EntityType.Builder.<PrimedBombe>of(PrimedBombe::new, MobCategory.MISC)
+                    .fireImmune()
+                    .sized(0.98F, 0.98F)
+                    .eyeHeight(0.15F)
+                    .clientTrackingRange(10)
+                    .updateInterval(10)
+                    .build("bombe")
+    );
 
 }

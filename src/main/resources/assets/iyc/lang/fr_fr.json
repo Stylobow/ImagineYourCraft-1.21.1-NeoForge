@@ -32,6 +32,10 @@
   "iyc.error.format": "Format invalide (%s) !",
   "iyc.error.corrupt": "Fichier image corrompu !",
 
+  "entity.iyc.bolt": "Carreau",
+  "entity.iyc.chair_entity": "Chaise",
+  "entity.iyc.bombe": "Bombe",
+
   "iyc.music.title": "Musique",
   "iyc.music.disclaimer": "Ces musiques n'appartiennent pas au mod, il s'agit d'un flux audio web public.",
   "iyc.music.stop": "Arrêter",
@@ -370,6 +374,7 @@
   "block.iyc.slate_slab": "Dalle en ardoise",
   "block.iyc.jumpbox": "Bloc de saut",
   "block.iyc.log_stairs": "Escalier en bûche",
+  "block.iyc.bombe": "Bombe",
   "block.iyc.glowstone_stairs": "Escalier lumineux",
   "block.iyc.iron_stairs": "Escalier en fer",
   "block.iyc.obsidian_stairs": "Escalier en obsidienne",
