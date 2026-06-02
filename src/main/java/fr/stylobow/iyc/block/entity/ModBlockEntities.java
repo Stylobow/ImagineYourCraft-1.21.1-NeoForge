@@ -28,6 +28,10 @@ public class ModBlockEntities {
     public static final Supplier<BlockEntityType<SteelBrewingStandBlockEntity>> STEEL_BREWING_STAND_BE = BLOCK_ENTITIES.register("steel_brewing_stand",
             () -> BlockEntityType.Builder.of(SteelBrewingStandBlockEntity::new, ModBlocks.STEEL_BREWING_STAND.get()).build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HiddenDoorBlockEntity>> HIDDEN_DOOR = BLOCK_ENTITIES.register("hidden_door",
+            () -> BlockEntityType.Builder.of(HiddenDoorBlockEntity::new, ModBlocks.HIDDEN_DOOR.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

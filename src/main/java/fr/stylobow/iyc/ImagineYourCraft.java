@@ -6,6 +6,7 @@ import fr.stylobow.iyc.block.entity.ChairRenderer;
 import fr.stylobow.iyc.block.entity.ModBlockEntities;
 import fr.stylobow.iyc.block.entity.ModEntities;
 import fr.stylobow.iyc.client.config.IYCConfig;
+import fr.stylobow.iyc.client.event.IronLadderHandler;
 import fr.stylobow.iyc.config.ModConfigs;
 import fr.stylobow.iyc.item.ModArmorMaterials;
 import fr.stylobow.iyc.item.ModCreativeModeTabs;
@@ -57,6 +58,7 @@ public class ImagineYourCraft {
         ModArmorMaterials.ARMOR_MATERIALS.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModFeatures.FEATURES.register(modEventBus);
+        NeoForge.EVENT_BUS.register(IronLadderHandler.class);
 
         ModMenuTypes.MENUS.register(modEventBus);
 

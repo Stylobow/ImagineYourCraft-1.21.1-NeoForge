@@ -21,6 +21,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.BlockGetter;
@@ -1193,9 +1194,24 @@ public class ModBlocks {
     public static final DeferredItem<Item> CHERRY_CAKE_ITEM = ITEMS.register("cherry_cake",
             () -> new BlockItem(CHERRY_CAKE.get(), new Item.Properties().stacksTo(1)));
 
+    public static final DeferredBlock<Block> HIDDEN_DOOR = registerDoorBlock("hidden_door",
+            () -> new HiddenDoorBlock(BlockBehaviour.Properties.of()
+                    .strength(3.0F)
+                    .sound(SoundType.STONE)
+                    .noOcclusion()
+                    .dynamicShape()
+            )
+    );
+
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
+        return toReturn;
+    }
+
+    private static <T extends Block> DeferredBlock<T> registerDoorBlock(String name, Supplier<T> block) {
+        DeferredBlock<T> toReturn = BLOCKS.register(name, block);
+        ITEMS.register(name, () -> new DoubleHighBlockItem(toReturn.get(), new Item.Properties()));
         return toReturn;
     }
 
