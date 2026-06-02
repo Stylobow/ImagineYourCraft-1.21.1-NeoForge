@@ -166,8 +166,8 @@ public static final DeferredRegister<CreativeModeTab>CREATIVE_MODE_TAB =
                         output.accept(ModBlocks.JUNGLE_SHELF);
                         output.accept(ModBlocks.ACACIA_SHELF);
                         output.accept(ModBlocks.DARK_OAK_SHELF);
-                        output.accept(ModBlocks.CHERRY_SHELF);
                         output.accept(ModBlocks.MANGROVE_SHELF);
+                        output.accept(ModBlocks.CHERRY_SHELF);
                         output.accept(ModBlocks.BAMBOO_SHELF);
                         output.accept(ModBlocks.CRIMSON_SHELF);
                         output.accept(ModBlocks.WARPED_SHELF);
