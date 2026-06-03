@@ -75,6 +75,73 @@ public class CustomSkinManager {
         }
     }
 
+    private static NativeImage convertLegacySkin(NativeImage inputImage) {
+        int width = inputImage.getWidth();
+        int height = inputImage.getHeight();
+
+        if (width == height || width == height * 2) {
+            int baseSize = width;
+            NativeImage modernImage;
+
+            if (width == height * 2) {
+                baseSize = width;
+                modernImage = new NativeImage(baseSize, baseSize, true);
+                modernImage.copyFrom(inputImage);
+                inputImage.close();
+                modernImage.fillRect(0, height, baseSize, height, 0);
+            } else {
+                modernImage = inputImage;
+            }
+
+            int scale = baseSize / 64;
+
+            boolean hasLeftLeg = false;
+            for (int y = 52 * scale; y < 64 * scale; y++) {
+                for (int x = 16 * scale; x < 32 * scale; x++) {
+                    if ((modernImage.getPixelRGBA(x, y) >> 24 & 255) > 0) {
+                        hasLeftLeg = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasLeftLeg) {
+                copyRectangle(modernImage, 4 * scale, 16 * scale, 20 * scale, 48 * scale, 4 * scale, 4 * scale, true, false);
+                copyRectangle(modernImage, 8 * scale, 16 * scale, 24 * scale, 48 * scale, 4 * scale, 4 * scale, true, false);
+                copyRectangle(modernImage, 0 * scale, 20 * scale, 24 * scale, 52 * scale, 4 * scale, 12 * scale, true, false);
+                copyRectangle(modernImage, 4 * scale, 20 * scale, 20 * scale, 52 * scale, 4 * scale, 12 * scale, true, false);
+                copyRectangle(modernImage, 8 * scale, 20 * scale, 16 * scale, 52 * scale, 4 * scale, 12 * scale, true, false);
+                copyRectangle(modernImage, 12 * scale, 20 * scale, 28 * scale, 52 * scale, 4 * scale, 12 * scale, true, false);
+
+                copyRectangle(modernImage, 44 * scale, 16 * scale, 36 * scale, 48 * scale, 4 * scale, 4 * scale, true, false);
+                copyRectangle(modernImage, 48 * scale, 16 * scale, 40 * scale, 48 * scale, 4 * scale, 4 * scale, true, false);
+                copyRectangle(modernImage, 40 * scale, 20 * scale, 40 * scale, 52 * scale, 4 * scale, 12 * scale, true, false);
+                copyRectangle(modernImage, 44 * scale, 20 * scale, 36 * scale, 52 * scale, 4 * scale, 12 * scale, true, false);
+                copyRectangle(modernImage, 48 * scale, 20 * scale, 32 * scale, 52 * scale, 4 * scale, 12 * scale, true, false);
+                copyRectangle(modernImage, 52 * scale, 20 * scale, 44 * scale, 52 * scale, 4 * scale, 12 * scale, true, false);
+            }
+
+            return modernImage;
+        }
+        return inputImage;
+    }
+
+    private static void copyRectangle(NativeImage img, int srcX, int srcY, int destX, int destY, int width, int height, boolean mirrorX, boolean mirrorY) {
+        int[] pixels = new int[width * height];
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                int pixelX = mirrorX ? (width - 1 - x) : x;
+                int pixelY = mirrorY ? (height - 1 - y) : y;
+                pixels[y * width + x] = img.getPixelRGBA(srcX + pixelX, srcY + pixelY);
+            }
+        }
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                img.setPixelRGBA(destX + x, destY + y, pixels[y * width + x]);
+            }
+        }
+    }
+
     public static void registerRemoteCosmetic(UUID playerId, int cosmeticType, String url) {
         receiveSkinPacket(playerId, cosmeticType, url);
     }
@@ -93,9 +160,12 @@ public class CustomSkinManager {
 
                 try (InputStream is = new ByteArrayInputStream(imageData)) {
                     NativeImage image = NativeImage.read(is);
+
+                    image = convertLegacySkin(image);
+
                     int width = image.getWidth();
                     int height = image.getHeight();
-                    if (!(width % 64 == 0) || !(height == width || height == width / 2)) {
+                    if (!(width % 64 == 0) || height != width) {
                         image.close();
                         return;
                     }
@@ -239,6 +309,11 @@ public class CustomSkinManager {
 
                 try (InputStream is = new ByteArrayInputStream(rawData)) {
                     NativeImage image = NativeImage.read(is);
+
+                    if (cosmeticType == 0) {
+                        image = convertLegacySkin(image);
+                    }
+
                     DynamicTexture texture = new DynamicTexture(image);
                     String typeStr = cosmeticType == 1 ? "cape" : (cosmeticType == 2 ? "hat" : "skin");
                     ResourceLocation rl = ResourceLocation.fromNamespaceAndPath("iyc", "custom_" + typeStr + "_" + playerId + "_" + System.currentTimeMillis());
