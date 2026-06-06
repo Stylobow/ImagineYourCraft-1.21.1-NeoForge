@@ -475,27 +475,27 @@ public class ModBlocks {
             ));
 
     public static final DeferredBlock<Block> STONE_SLOPES = registerBlock("stone_slopes",
-            () -> new StairBlock(Blocks.STONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
+            () -> new StairBlock(Blocks.STONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).noOcclusion()));
     public static final DeferredBlock<Block> SLATE_SLOPES = registerBlock("slate_slopes",
-            () -> new StairBlock(ModBlocks.SLATE_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(ModBlocks.SLATE_BLOCK.get())));
+            () -> new StairBlock(ModBlocks.SLATE_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(ModBlocks.SLATE_BLOCK.get()).noOcclusion()));
     public static final DeferredBlock<Block> SANDSTONE_SLOPES = registerBlock("sandstone_slopes",
-            () -> new StairBlock(Blocks.SANDSTONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE)));
+            () -> new StairBlock(Blocks.SANDSTONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).noOcclusion()));
     public static final DeferredBlock<Block> GLOWSTONE_SLOPES = registerBlock("glowstone_slopes",
-            () -> new StairBlock(Blocks.GLOWSTONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.GLOWSTONE)));
+            () -> new StairBlock(Blocks.GLOWSTONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.GLOWSTONE).noOcclusion()));
     public static final DeferredBlock<Block> GLASS_SLOPES = registerBlock("glass_slopes",
-            () -> new StairBlock(Blocks.GLASS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion()));
+            () -> new StairBlock(Blocks.GLASS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion().noOcclusion()));
     public static final DeferredBlock<Block> OAK_PLANKS_SLOPES = registerBlock("oak_planks_slopes",
-            () -> new StairBlock(Blocks.OAK_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion()));
+            () -> new StairBlock(Blocks.OAK_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().noOcclusion()));
     public static final DeferredBlock<Block> SPRUCE_PLANKS_SLOPES = registerBlock("spruce_planks_slopes",
-            () -> new StairBlock(Blocks.SPRUCE_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS)));
+            () -> new StairBlock(Blocks.SPRUCE_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> BIRCH_PLANKS_SLOPES = registerBlock("birch_planks_slopes",
-            () -> new StairBlock(Blocks.BIRCH_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_PLANKS)));
+            () -> new StairBlock(Blocks.BIRCH_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> JUNGLE_PLANKS_SLOPES = registerBlock("jungle_planks_slopes",
-            () -> new StairBlock(Blocks.JUNGLE_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_PLANKS)));
+            () -> new StairBlock(Blocks.JUNGLE_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> ACACIA_PLANKS_SLOPES = registerBlock("acacia_planks_slopes",
-            () -> new StairBlock(Blocks.ACACIA_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+            () -> new StairBlock(Blocks.ACACIA_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> DARK_OAK_PLANKS_SLOPES = registerBlock("dark_oak_planks_slopes",
-            () -> new StairBlock(Blocks.DARK_OAK_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_PLANKS)));
+            () -> new StairBlock(Blocks.DARK_OAK_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> MANGROVE_PLANKS_SLOPES = registerBlock("mangrove_planks_slopes",
             () -> new StairBlock(Blocks.MANGROVE_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.MANGROVE_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> CHERRY_PLANKS_SLOPES = registerBlock("cherry_planks_slopes",
@@ -509,15 +509,15 @@ public class ModBlocks {
     public static final DeferredBlock<Block> OAK_LOG_SLOPES = registerBlock("oak_log_slopes",
             () -> new StairBlock(Blocks.OAK_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> SPRUCE_LOG_SLOPES = registerBlock("spruce_log_slopes",
-            () -> new StairBlock(Blocks.SPRUCE_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS)));
+            () -> new StairBlock(Blocks.SPRUCE_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> BIRCH_LOG_SLOPES = registerBlock("birch_log_slopes",
-            () -> new StairBlock(Blocks.BIRCH_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_PLANKS)));
+            () -> new StairBlock(Blocks.BIRCH_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> JUNGLE_LOG_SLOPES = registerBlock("jungle_log_slopes",
-            () -> new StairBlock(Blocks.JUNGLE_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_PLANKS)));
+            () -> new StairBlock(Blocks.JUNGLE_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> ACACIA_LOG_SLOPES = registerBlock("acacia_log_slopes",
-            () -> new StairBlock(Blocks.ACACIA_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+            () -> new StairBlock(Blocks.ACACIA_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> DARK_OAK_LOG_SLOPES = registerBlock("dark_oak_log_slopes",
-            () -> new StairBlock(Blocks.DARK_OAK_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_PLANKS)));
+            () -> new StairBlock(Blocks.DARK_OAK_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> MANGROVE_LOG_SLOPES = registerBlock("mangrove_log_slopes",
             () -> new StairBlock(Blocks.MANGROVE_PLANKS.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.MANGROVE_PLANKS).noOcclusion()));
     public static final DeferredBlock<Block> CHERRY_LOG_SLOPES = registerBlock("cherry_log_slopes",
