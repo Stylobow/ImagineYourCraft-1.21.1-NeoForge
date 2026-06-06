@@ -29,7 +29,7 @@ This isn't just a nostalgic copy! This version has been **fully redesigned**. It
 
 ## 🚀 Installation & Status
 
-**The 1.0.1 Release is now available!**
+**The 1.0.2 Release is now available!**
 
 1.  Download the latest `.jar` from the [Releases](https://github.com/Stylobow/ImagineYourCraft-1.21.1-NeoForge/releases) tab.
 2.  Install [NeoForge](https://neoforged.net/) for Minecraft 1.21.1 (21.1.216).
