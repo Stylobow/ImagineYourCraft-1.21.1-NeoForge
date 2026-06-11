@@ -1,7 +1,6 @@
 package fr.stylobow.iyc.item;
 
 import fr.stylobow.iyc.ImagineYourCraft;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +10,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.EnumMap;

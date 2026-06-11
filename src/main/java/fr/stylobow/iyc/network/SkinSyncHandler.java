@@ -4,7 +4,6 @@ import fr.stylobow.iyc.attachment.ModAttachmentTypes;
 import fr.stylobow.iyc.client.skin.CustomSkinManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class SkinSyncHandler {

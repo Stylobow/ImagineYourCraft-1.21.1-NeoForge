@@ -5,7 +5,6 @@ import fr.stylobow.iyc.network.SkinSyncPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class NetworkEvents {
 

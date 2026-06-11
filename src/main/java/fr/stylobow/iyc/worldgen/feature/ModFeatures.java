@@ -1,6 +1,5 @@
 package fr.stylobow.iyc.worldgen.feature;
 
-import fr.stylobow.iyc.ImagineYourCraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;

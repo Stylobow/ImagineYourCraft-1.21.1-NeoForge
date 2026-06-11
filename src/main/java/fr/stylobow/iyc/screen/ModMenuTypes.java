@@ -1,6 +1,5 @@
 package fr.stylobow.iyc.screen;
 
-import fr.stylobow.iyc.ImagineYourCraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
