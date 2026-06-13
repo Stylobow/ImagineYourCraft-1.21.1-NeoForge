@@ -8,6 +8,21 @@
     "iyc:steel_block",
     "iyc:lignite_block",
     "iyc:massive_obsidian_block",
-    "iyc:slate_block"
+    "iyc:slate_block",
+    "orange_iron_block",
+    "magenta_iron_block",
+    "light_blue_iron_block",
+    "yellow_iron_block",
+    "lime_iron_block",
+    "pink_iron_block",
+    "gray_iron_block",
+    "light_gray_iron_block",
+    "cyan_iron_block",
+    "purple_iron_block",
+    "blue_iron_block",
+    "brown_iron_block",
+    "green_iron_block",
+    "red_iron_block",
+    "black_iron_block"
   ]
 }
