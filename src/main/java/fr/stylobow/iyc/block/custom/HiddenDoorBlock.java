@@ -3,6 +3,7 @@ package fr.stylobow.iyc.block.custom;
 import fr.stylobow.iyc.block.entity.HiddenDoorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public class HiddenDoorBlock extends DoorBlock implements EntityBlock {
 
     public HiddenDoorBlock(Properties properties) {
-        super(BlockSetType.OAK, properties);
+        super(BlockSetType.STONE, properties);
     }
 
     @Nullable
@@ -79,6 +80,28 @@ public class HiddenDoorBlock extends DoorBlock implements EntityBlock {
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+        if (level instanceof BlockAndTintGetter tintGetter) {
+            BlockEntity be = tintGetter.getBlockEntity(pos);
+            if (be instanceof HiddenDoorBlockEntity doorBe) {
+                return doorBe.getMimickedBlock().propagatesSkylightDown(level, pos);
+            }
+        }
         return true;
+    }
+
+    @Override
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
+        if (level instanceof BlockAndTintGetter tintGetter) {
+            BlockEntity be = tintGetter.getBlockEntity(pos);
+            if (be instanceof HiddenDoorBlockEntity doorBe) {
+                return doorBe.getMimickedBlock().getShadeBrightness(level, pos);
+            }
+        }
+        return super.getShadeBrightness(state, level, pos);
+    }
+
+    @Override
+    public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+        return super.skipRendering(state, adjacentBlockState, side);
     }
 }

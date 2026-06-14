@@ -1200,6 +1200,7 @@ public class ModBlocks {
                     .sound(SoundType.STONE)
                     .noOcclusion()
                     .dynamicShape()
+                    .pushReaction(PushReaction.DESTROY)
             )
     );
 

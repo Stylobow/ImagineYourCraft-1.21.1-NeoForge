@@ -1,12 +1,15 @@
 package fr.stylobow.iyc.event;
 
 import fr.stylobow.iyc.block.ModBlocks;
+import fr.stylobow.iyc.block.entity.HiddenDoorBlockEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 
-import java.awt.Color;
+import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = "iyc", bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ColorEvents {
@@ -177,6 +180,16 @@ public class ColorEvents {
         event.register((state, level, pos, tintIndex) -> C_GREEN, ModBlocks.GREEN_BLOB.get());
         event.register((state, level, pos, tintIndex) -> C_RED, ModBlocks.RED_BLOB.get());
         event.register((state, level, pos, tintIndex) -> C_BLACK, ModBlocks.BLACK_BLOB.get());
+
+        event.register((state, level, pos, tintIndex) -> {
+            if (level != null && pos != null) {
+                BlockEntity be = level.getBlockEntity(pos);
+                if (be instanceof HiddenDoorBlockEntity doorBe) {
+                    return doorBe.getMimicColor(level, pos, tintIndex);
+                }
+            }
+            return -1;
+        }, ModBlocks.HIDDEN_DOOR.get());
     }
 
     @SubscribeEvent
@@ -328,5 +341,23 @@ public class ColorEvents {
         event.register((stack, tintIndex) -> C_GREEN, ModBlocks.GREEN_BLOB.get());
         event.register((stack, tintIndex) -> C_RED, ModBlocks.RED_BLOB.get());
         event.register((stack, tintIndex) -> C_BLACK, ModBlocks.BLACK_BLOB.get());
+    }
+
+    @SafeVarargs
+    private static void registerColorGroup(RegisterColorHandlersEvent.Block event, int color, Supplier<? extends Block>... blocks) {
+        Block[] blockArray = new Block[blocks.length];
+        for (int i = 0; i < blocks.length; i++) {
+            blockArray[i] = blocks[i].get();
+        }
+        event.register((state, level, pos, tintIndex) -> color, blockArray);
+    }
+
+    @SafeVarargs
+    private static void registerColorGroup(RegisterColorHandlersEvent.Item event, int color, Supplier<? extends Block>... blocks) {
+        Block[] blockArray = new Block[blocks.length];
+        for (int i = 0; i < blocks.length; i++) {
+            blockArray[i] = blocks[i].get();
+        }
+        event.register((stack, tintIndex) -> color, blockArray);
     }
 }

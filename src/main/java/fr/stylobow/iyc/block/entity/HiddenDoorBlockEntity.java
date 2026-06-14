@@ -1,5 +1,6 @@
 package fr.stylobow.iyc.block.entity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -7,6 +8,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class HiddenDoorBlockEntity extends BlockEntity {
     public static final ModelProperty<BlockState> MIMIC_PROPERTY = new ModelProperty<>();
+    public static final ModelProperty<BlockAndTintGetter> LEVEL_PROPERTY = new ModelProperty<>();
+    public static final ModelProperty<BlockPos> POS_PROPERTY = new ModelProperty<>();
 
     private BlockState mimickedBlock = Blocks.STONE.defaultBlockState();
 
@@ -40,6 +44,23 @@ public class HiddenDoorBlockEntity extends BlockEntity {
                 this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 8);
             }
         }
+    }
+
+    public int getMimicColor(BlockAndTintGetter level, BlockPos pos, int tintIndex) {
+        BlockState stateToMimic = this.mimickedBlock;
+        if (this.getBlockState().hasProperty(DoorBlock.HALF) && this.getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER) {
+            if (this.level != null) {
+                BlockEntity belowBe = this.level.getBlockEntity(this.worldPosition.below());
+                if (belowBe instanceof HiddenDoorBlockEntity hiddenDoorBE) {
+                    stateToMimic = hiddenDoorBE.getMimickedBlock();
+                }
+            }
+        }
+
+        if (stateToMimic != null && !stateToMimic.isAir()) {
+            return Minecraft.getInstance().getBlockColors().getColor(stateToMimic, level, pos, tintIndex);
+        }
+        return -1;
     }
 
     @Override
@@ -89,6 +110,11 @@ public class HiddenDoorBlockEntity extends BlockEntity {
                 stateToMimic = hiddenDoorBE.getMimickedBlock();
             }
         }
-        return ModelData.builder().with(HiddenDoorBlockEntity.MIMIC_PROPERTY, stateToMimic).build();
+
+        return ModelData.builder()
+                .with(MIMIC_PROPERTY, stateToMimic)
+                .with(LEVEL_PROPERTY, this.level)
+                .with(POS_PROPERTY, this.worldPosition)
+                .build();
     }
 }

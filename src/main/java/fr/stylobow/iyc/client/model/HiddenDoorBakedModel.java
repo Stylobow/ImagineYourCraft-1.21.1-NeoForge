@@ -14,8 +14,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.model.IDynamicBakedModel;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +27,9 @@ import java.util.List;
 
 public class HiddenDoorBakedModel implements IDynamicBakedModel {
     private final BakedModel originalModel;
+
+    public static final ModelProperty<net.minecraft.world.level.BlockAndTintGetter> LEVEL_PROPERTY = new ModelProperty<>();
+    public static final ModelProperty<net.minecraft.core.BlockPos> POS_PROPERTY = new ModelProperty<>();
 
     public HiddenDoorBakedModel(BakedModel originalModel) {
         this.originalModel = originalModel;
@@ -58,39 +64,52 @@ public class HiddenDoorBakedModel implements IDynamicBakedModel {
         }
 
         TextureAtlasSprite mimicSprite = null;
+        int extractedTintIndex = -1;
+
         try {
-            Block mimicBlock = mimicState.getBlock();
-            Direction targetFace;
-
-            if (mimicBlock == Blocks.GRASS_BLOCK || mimicBlock == Blocks.PODZOL || mimicBlock == Blocks.MYCELIUM) {
-                targetFace = Direction.DOWN;
+            FluidState fluidState = mimicState.getFluidState();
+            if (!fluidState.isEmpty()) {
+                IClientFluidTypeExtensions extensions = IClientFluidTypeExtensions.of(fluidState.getType());
+                var textureLocation = extensions.getStillTexture(fluidState, modelData.get(LEVEL_PROPERTY), modelData.get(POS_PROPERTY));
+                if (textureLocation != null) {
+                    mimicSprite = Minecraft.getInstance().getTextureAtlas(net.minecraft.client.renderer.texture.TextureAtlas.LOCATION_BLOCKS).apply(textureLocation);
+                }
+                extractedTintIndex = 0;
             } else {
-                targetFace = side != null ? side : Direction.NORTH;
-            }
+                Block mimicBlock = mimicState.getBlock();
+                Direction targetFace;
 
-            RenderType targetLayer = renderType != null ? renderType : RenderType.solid();
-            List<BakedQuad> mimicQuads = mimicModel.getQuads(mimicState, targetFace, rand, ModelData.EMPTY, targetLayer);
-
-            if (mimicQuads.isEmpty()) {
-                for (Direction dir : Direction.values()) {
-                    if (dir == targetFace) continue;
-                    mimicQuads = mimicModel.getQuads(mimicState, dir, rand, ModelData.EMPTY, targetLayer);
-                    if (!mimicQuads.isEmpty()) break;
+                if (mimicBlock == Blocks.GRASS_BLOCK || mimicBlock == Blocks.PODZOL || mimicBlock == Blocks.MYCELIUM) {
+                    targetFace = Direction.DOWN;
+                } else {
+                    targetFace = side != null ? side : Direction.NORTH;
                 }
-            }
 
-            if (mimicQuads.isEmpty()) {
-                for (RenderType type : RenderType.chunkBufferLayers()) {
-                    mimicQuads = mimicModel.getQuads(mimicState, targetFace, rand, ModelData.EMPTY, type);
-                    if (!mimicQuads.isEmpty()) break;
+                RenderType targetLayer = renderType != null ? renderType : RenderType.solid();
+                List<BakedQuad> mimicQuads = mimicModel.getQuads(mimicState, targetFace, rand, ModelData.EMPTY, targetLayer);
+
+                if (mimicQuads.isEmpty()) {
+                    for (Direction dir : Direction.values()) {
+                        if (dir == targetFace) continue;
+                        mimicQuads = mimicModel.getQuads(mimicState, dir, rand, ModelData.EMPTY, targetLayer);
+                        if (!mimicQuads.isEmpty()) break;
+                    }
                 }
-            }
 
-            if (!mimicQuads.isEmpty()) {
-                for (BakedQuad q : mimicQuads) {
-                    if (q.getSprite() != null && !q.getSprite().contents().name().getPath().contains("missingno")) {
-                        mimicSprite = q.getSprite();
-                        break;
+                if (mimicQuads.isEmpty()) {
+                    for (RenderType type : RenderType.chunkBufferLayers()) {
+                        mimicQuads = mimicModel.getQuads(mimicState, targetFace, rand, ModelData.EMPTY, type);
+                        if (!mimicQuads.isEmpty()) break;
+                    }
+                }
+
+                if (!mimicQuads.isEmpty()) {
+                    for (BakedQuad q : mimicQuads) {
+                        if (q.getSprite() != null && !q.getSprite().contents().name().getPath().contains("missingno")) {
+                            mimicSprite = q.getSprite();
+                            extractedTintIndex = q.getTintIndex();
+                            break;
+                        }
                     }
                 }
             }
@@ -153,7 +172,7 @@ public class HiddenDoorBakedModel implements IDynamicBakedModel {
 
             retexturedQuads.add(new BakedQuad(
                     vertices,
-                    doorQuad.getTintIndex(),
+                    extractedTintIndex,
                     doorQuad.getDirection(),
                     mimicSprite,
                     doorQuad.isShade()
