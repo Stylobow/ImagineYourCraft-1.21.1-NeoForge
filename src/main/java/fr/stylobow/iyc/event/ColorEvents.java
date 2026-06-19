@@ -18,7 +18,7 @@ public class ColorEvents {
     public static final int C_ORANGE     = 0xE06100 | 0xFF000000;
     public static final int C_MAGENTA    = 0xA9309F | 0xFF000000;
     public static final int C_LIGHT_BLUE = 0x2389C7 | 0xFF000000;
-    public static final int C_YELLOW     = 0xF2B015 | 0xFF000000;
+    public static final int C_YELLOW     = 0xF1AF15 | 0xFF000000;
     public static final int C_LIME       = 0x5EA818 | 0xFF000000;
     public static final int C_PINK       = 0xD4657F | 0xFF000000;
     public static final int C_GRAY       = 0x3A3A3A | 0xFF000000;
