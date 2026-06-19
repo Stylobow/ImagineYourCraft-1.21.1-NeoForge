@@ -1,9 +1,16 @@
 package fr.stylobow.iyc.client.audio;
 
 import fr.stylobow.iyc.client.config.IYCConfig;
+import fr.stylobow.iyc.sound.ModSounds;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.JavaSoundAudioDevice;
 import javazoom.jl.player.Player;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.SourceDataLine;
@@ -12,6 +19,9 @@ import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RadioManager {
 
@@ -20,8 +30,39 @@ public class RadioManager {
     private static String currentRadio = "";
     private static CustomAudioDevice customDevice;
 
+    private static boolean isIycRadioActive = false;
+    private static SimpleSoundInstance currentLocalSoundInstance = null;
+
+    private static final List<ResourceLocation> playlist = new ArrayList<>();
+    private static int playlistIndex = 0;
+
+    private static void preparePlaylist() {
+        playlist.clear();
+        for (DeferredHolder<?, ?> holder : ModSounds.SOUND_EVENTS.getEntries()) {
+            playlist.add(holder.getId());
+        }
+        Collections.shuffle(playlist);
+        playlistIndex = 0;
+    }
+
     public static void play(String urlStr, String radioName) {
-        stop();
+        if ("IYC Radio".equals(radioName)) {
+            isIycRadioActive = true;
+            stopWebStream();
+            stopLocalSound();
+            currentRadio = radioName;
+
+            preparePlaylist();
+            playNextLocalTrack();
+        } else {
+            isIycRadioActive = false;
+            stopLocalSound();
+            playWebStream(urlStr, radioName);
+        }
+    }
+
+    private static void playWebStream(String urlStr, String radioName) {
+        stopWebStream();
         currentRadio = radioName;
 
         playerThread = new Thread(() -> {
@@ -61,7 +102,65 @@ public class RadioManager {
         playerThread.start();
     }
 
-    public static void stop() {
+    private static void playLocalTrack(ResourceLocation location) {
+        Minecraft mc = Minecraft.getInstance();
+        mc.execute(() -> {
+            float gameVolume = mc.options.getSoundSourceVolume(SoundSource.MASTER);
+            float recordsVolume = mc.options.getSoundSourceVolume(SoundSource.RECORDS);
+
+            float targetVolume = IYCConfig.data.musicVolume;
+            if (gameVolume > 0 && recordsVolume > 0) {
+                targetVolume = targetVolume / (gameVolume * recordsVolume);
+            }
+
+            currentLocalSoundInstance = new SimpleSoundInstance(
+                    location,
+                    SoundSource.RECORDS,
+                    targetVolume,
+                    1.0F,
+                    SoundInstance.createUnseededRandom(),
+                    false,
+                    0,
+                    SoundInstance.Attenuation.NONE,
+                    0.0D,
+                    0.0D,
+                    0.0D,
+                    true
+            );
+            mc.getSoundManager().play(currentLocalSoundInstance);
+        });
+    }
+
+    public static void playNextLocalTrack() {
+        if (!isIycRadioActive || playlist.isEmpty()) return;
+
+        if (playlistIndex >= playlist.size()) {
+            Collections.shuffle(playlist);
+            playlistIndex = 0;
+        }
+
+        ResourceLocation nextSound = playlist.get(playlistIndex++);
+        playLocalTrack(nextSound);
+    }
+
+    public static void tickIycRadio() {
+        if (!isIycRadioActive) return;
+
+        Minecraft mc = Minecraft.getInstance();
+        if (currentLocalSoundInstance != null && !mc.getSoundManager().isActive(currentLocalSoundInstance)) {
+            playNextLocalTrack();
+        }
+    }
+
+    private static void stopLocalSound() {
+        if (currentLocalSoundInstance != null) {
+            Minecraft mc = Minecraft.getInstance();
+            mc.execute(() -> mc.getSoundManager().stop(currentLocalSoundInstance));
+            currentLocalSoundInstance = null;
+        }
+    }
+
+    private static void stopWebStream() {
         if (player != null) {
             player.close();
             player = null;
@@ -71,6 +170,13 @@ public class RadioManager {
             playerThread = null;
         }
         customDevice = null;
+    }
+
+    public static void stop() {
+        isIycRadioActive = false;
+        playlist.clear();
+        stopWebStream();
+        stopLocalSound();
         currentRadio = "";
     }
 
@@ -79,6 +185,17 @@ public class RadioManager {
         IYCConfig.save();
         if (customDevice != null) {
             customDevice.setCustomVolume(volume);
+        }
+        if (currentLocalSoundInstance != null) {
+            Minecraft mc = Minecraft.getInstance();
+            float gameVolume = mc.options.getSoundSourceVolume(SoundSource.MASTER);
+            float recordsVolume = mc.options.getSoundSourceVolume(SoundSource.RECORDS);
+
+            float targetVolume = volume;
+            if (gameVolume > 0 && recordsVolume > 0) {
+                targetVolume = targetVolume / (gameVolume * recordsVolume);
+            }
+            mc.getSoundManager().updateSourceVolume(SoundSource.RECORDS, targetVolume);
         }
     }
 
