@@ -5,6 +5,7 @@ import fr.stylobow.iyc.block.ModBlocks;
 import fr.stylobow.iyc.block.entity.ChairRenderer;
 import fr.stylobow.iyc.block.entity.ModBlockEntities;
 import fr.stylobow.iyc.block.entity.ModEntities;
+import fr.stylobow.iyc.client.audio.RadioManager;
 import fr.stylobow.iyc.client.config.IYCConfig;
 import fr.stylobow.iyc.client.event.IronLadderHandler;
 import fr.stylobow.iyc.config.ModConfigs;
@@ -19,6 +20,7 @@ import fr.stylobow.iyc.sound.ModSounds;
 import fr.stylobow.iyc.worldgen.feature.ModFeatures;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.slf4j.Logger;
@@ -37,6 +39,8 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
+import static net.neoforged.neoforge.common.NeoForge.EVENT_BUS;
+
 @Mod(ImagineYourCraft.MOD_ID)
 public class ImagineYourCraft {
     public static final String MOD_ID = "iyc";
@@ -48,7 +52,7 @@ public class ImagineYourCraft {
         modEventBus.addListener(this::onConfigLoad);
 
         ModAttachmentTypes.ATTACHMENT_TYPES.register(modEventBus);
-        NeoForge.EVENT_BUS.register(this);
+        EVENT_BUS.register(this);
 
         ModCreativeModeTabs.register(modEventBus);
 
@@ -58,7 +62,7 @@ public class ImagineYourCraft {
         ModArmorMaterials.ARMOR_MATERIALS.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModFeatures.FEATURES.register(modEventBus);
-        NeoForge.EVENT_BUS.register(IronLadderHandler.class);
+        EVENT_BUS.register(IronLadderHandler.class);
 
         ModMenuTypes.MENUS.register(modEventBus);
 
@@ -324,11 +328,15 @@ public class ImagineYourCraft {
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {
             IYCConfig.load();
+            EVENT_BUS.addListener(ClientModEvents::onClientTick);
         }
 
         @SubscribeEvent
         static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(ModEntities.CHAIR_ENTITY.get(), ChairRenderer::new);
+        }
+        private static void onClientTick(ClientTickEvent.Post event) {
+            RadioManager.tickIycRadio();
         }
     }
 
