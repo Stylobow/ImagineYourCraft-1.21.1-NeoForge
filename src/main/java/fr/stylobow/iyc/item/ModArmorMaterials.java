@@ -20,6 +20,9 @@ public class ModArmorMaterials {
 
     public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, ImagineYourCraft.MOD_ID);
 
+    public static final Holder<ArmorMaterial> STEEL = register("steel",
+            buildDefense(2, 5, 7, 3), 12, SoundEvents.ARMOR_EQUIP_IRON, 1.0F, 0.0F, () -> Ingredient.of(ModItems.STEEL_INGOT.get()));
+
     public static final Holder<ArmorMaterial> SAPHIR = register("saphir",
             buildDefense(3, 6, 8, 3), 24, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.2F, 0.0F, () -> Ingredient.of(ModItems.SAPHIR.get()));
 

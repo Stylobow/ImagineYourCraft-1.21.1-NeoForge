@@ -521,6 +521,11 @@ public static final DeferredRegister<CreativeModeTab>CREATIVE_MODE_TAB =
                     .withTabsBefore(ResourceLocation.fromNamespaceAndPath(ImagineYourCraft.MOD_ID, "iyc_tools_tab"))
                     .title(Component.translatable("creative.iyc.combat"))
                     .displayItems((parameters, output) -> {
+                        output.accept(ModItems.STEEL_SWORD);
+                        output.accept(ModItems.STEEL_HELMET);
+                        output.accept(ModItems.STEEL_CHESTPLATE);
+                        output.accept(ModItems.STEEL_LEGGINGS);
+                        output.accept(ModItems.STEEL_BOOTS);
                         output.accept(ModItems.OBSIDIAN_SWORD);
                         output.accept(ModItems.OBSIDIAN_HELMET);
                         output.accept(ModItems.OBSIDIAN_CHESTPLATE);
@@ -560,6 +565,10 @@ public static final DeferredRegister<CreativeModeTab>CREATIVE_MODE_TAB =
                     .withTabsBefore(ResourceLocation.fromNamespaceAndPath(ImagineYourCraft.MOD_ID, "iyc_materials_tab"))
                     .title(Component.translatable("creative.iyc.tools"))
                     .displayItems((parameters, output) -> {
+                        output.accept(ModItems.STEEL_SHOVEL);
+                        output.accept(ModItems.STEEL_PICKAXE);
+                        output.accept(ModItems.STEEL_HOE);
+                        output.accept(ModItems.STEEL_AXE);
                         output.accept(ModItems.OBSIDIAN_SHOVEL);
                         output.accept(ModItems.OBSIDIAN_PICKAXE);
                         output.accept(ModItems.OBSIDIAN_HOE);

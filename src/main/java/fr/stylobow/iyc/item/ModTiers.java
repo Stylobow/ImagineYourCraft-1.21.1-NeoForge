@@ -11,6 +11,14 @@ import java.util.function.Supplier;
 
 public enum ModTiers implements Tier {
 
+    STEEL(
+            750,
+            7.0F,
+            2.5F,
+            12,
+            () -> Ingredient.of(ModItems.STEEL_INGOT.get())
+    ),
+
     SAPHIR(
             1650,        // Durability
             8.3F,              // Minin Speed

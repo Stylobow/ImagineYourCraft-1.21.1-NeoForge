@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": {
+      "item": "iyc:steel_ingot"
+    }
+  },
+  "pattern": [
+    "X X",
+    "X X",
+    "   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "iyc:steel_boots"
+  }
+}

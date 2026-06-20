@@ -131,6 +131,25 @@ public class ModItems {
     public static final DeferredItem<Item> RECORD_GIRL_CRAFTY = ITEMS.register("record_girl_crafty",
             () -> new Item(new Item.Properties().jukeboxPlayable(ModSounds.GIRL_CRAFTY_KEY).stacksTo(1).rarity(Rarity.RARE)));
 
+    public static final DeferredItem<Item> STEEL_SWORD = ITEMS.register("steel_sword",
+            () -> new SwordItem(ModTiers.STEEL, new Item.Properties().attributes(SwordItem.createAttributes(ModTiers.STEEL, 3, -2.4F))));
+    public static final DeferredItem<Item> STEEL_PICKAXE = ITEMS.register("steel_pickaxe",
+            () -> new PickaxeItem(ModTiers.STEEL, new Item.Properties().attributes(PickaxeItem.createAttributes(ModTiers.STEEL, 1, -2.8F))));
+    public static final DeferredItem<Item> STEEL_AXE = ITEMS.register("steel_axe",
+            () -> new AxeItem(ModTiers.STEEL, new Item.Properties().attributes(AxeItem.createAttributes(ModTiers.STEEL, 5.5F, -3.0F))));
+    public static final DeferredItem<Item> STEEL_SHOVEL = ITEMS.register("steel_shovel",
+            () -> new ShovelItem(ModTiers.STEEL, new Item.Properties().attributes(ShovelItem.createAttributes(ModTiers.STEEL, 1.5F, -3.0F))));
+    public static final DeferredItem<Item> STEEL_HOE = ITEMS.register("steel_hoe",
+            () -> new HoeItem(ModTiers.STEEL, new Item.Properties().attributes(HoeItem.createAttributes(ModTiers.STEEL, -2, -1.0F))));
+
+    public static final DeferredItem<Item> STEEL_HELMET = ITEMS.register("steel_helmet",
+            () -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(22))));
+    public static final DeferredItem<Item> STEEL_CHESTPLATE = ITEMS.register("steel_chestplate",
+            () -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(22))));
+    public static final DeferredItem<Item> STEEL_LEGGINGS = ITEMS.register("steel_leggings",
+            () -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(22))));
+    public static final DeferredItem<Item> STEEL_BOOTS = ITEMS.register("steel_boots",
+            () -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(22))));
 
     public static final DeferredItem<Item> SAPHIR_SWORD = ITEMS.register("saphir_sword",
             () -> new SwordItem(ModTiers.SAPHIR, new Item.Properties().attributes(SwordItem.createAttributes(ModTiers.SAPHIR, 3, -2.4F))));
