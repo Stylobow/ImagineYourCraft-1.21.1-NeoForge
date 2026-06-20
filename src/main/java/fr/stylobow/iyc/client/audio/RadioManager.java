@@ -32,6 +32,7 @@ public class RadioManager {
 
     private static boolean isIycRadioActive = false;
     private static SimpleSoundInstance currentLocalSoundInstance = null;
+    private static float currentTrackVolume = 0.5f;
 
     private static final List<ResourceLocation> playlist = new ArrayList<>();
     private static int playlistIndex = 0;
@@ -105,18 +106,12 @@ public class RadioManager {
     private static void playLocalTrack(ResourceLocation location) {
         Minecraft mc = Minecraft.getInstance();
         mc.execute(() -> {
-            float gameVolume = mc.options.getSoundSourceVolume(SoundSource.MASTER);
-            float recordsVolume = mc.options.getSoundSourceVolume(SoundSource.RECORDS);
-
-            float targetVolume = IYCConfig.data.musicVolume;
-            if (gameVolume > 0 && recordsVolume > 0) {
-                targetVolume = targetVolume / (gameVolume * recordsVolume);
-            }
+            currentTrackVolume = calculateLocalVolume();
 
             currentLocalSoundInstance = new SimpleSoundInstance(
                     location,
                     SoundSource.RECORDS,
-                    targetVolume,
+                    currentTrackVolume,
                     1.0F,
                     SoundInstance.createUnseededRandom(),
                     false,
@@ -126,7 +121,12 @@ public class RadioManager {
                     0.0D,
                     0.0D,
                     true
-            );
+            ) {
+                @Override
+                public float getVolume() {
+                    return currentTrackVolume;
+                }
+            };
             mc.getSoundManager().play(currentLocalSoundInstance);
         });
     }
@@ -147,6 +147,8 @@ public class RadioManager {
         if (!isIycRadioActive) return;
 
         Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) return;
+
         if (currentLocalSoundInstance != null && !mc.getSoundManager().isActive(currentLocalSoundInstance)) {
             playNextLocalTrack();
         }
@@ -188,15 +190,24 @@ public class RadioManager {
         }
         if (currentLocalSoundInstance != null) {
             Minecraft mc = Minecraft.getInstance();
-            float gameVolume = mc.options.getSoundSourceVolume(SoundSource.MASTER);
-            float recordsVolume = mc.options.getSoundSourceVolume(SoundSource.RECORDS);
-
-            float targetVolume = volume;
-            if (gameVolume > 0 && recordsVolume > 0) {
-                targetVolume = targetVolume / (gameVolume * recordsVolume);
-            }
-            mc.getSoundManager().updateSourceVolume(SoundSource.RECORDS, targetVolume);
+            currentTrackVolume = calculateLocalVolume();
+            mc.execute(() -> mc.getSoundManager().updateSourceVolume(
+                    SoundSource.RECORDS,
+                    mc.options.getSoundSourceVolume(SoundSource.RECORDS)
+            ));
         }
+    }
+
+    private static float calculateLocalVolume() {
+        Minecraft mc = Minecraft.getInstance();
+        float gameVolume = mc.options.getSoundSourceVolume(SoundSource.MASTER);
+        float recordsVolume = mc.options.getSoundSourceVolume(SoundSource.RECORDS);
+
+        float targetVolume = IYCConfig.data.musicVolume;
+        if (gameVolume > 0 && recordsVolume > 0) {
+            targetVolume = targetVolume / (gameVolume * recordsVolume);
+        }
+        return targetVolume;
     }
 
     public static float getVolume() {
