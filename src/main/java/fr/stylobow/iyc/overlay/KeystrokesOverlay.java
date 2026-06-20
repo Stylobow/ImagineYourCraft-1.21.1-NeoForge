@@ -8,6 +8,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
+import org.lwjgl.glfw.GLFW;
 
 import java.awt.Color;
 
@@ -47,13 +48,15 @@ public class KeystrokesOverlay implements LayeredDraw.Layer {
         int mouseWidth = (totalWidth - gap) / 2;
         int mouseHeight = 22;
 
+        long windowHandle = mc.getWindow().getWindow();
+
         drawMouseBox(guiGraphics, x, yRow3, mouseWidth, mouseHeight,
-                mc.mouseHandler.isLeftPressed(),
+                GLFW.glfwGetMouseButton(windowHandle, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS,
                 Component.translatable("iyc.key.mouse.left").getString(),
                 CpsSystem.getLeftCps());
 
         drawMouseBox(guiGraphics, x + mouseWidth + gap, yRow3, mouseWidth, mouseHeight,
-                mc.mouseHandler.isRightPressed(),
+                GLFW.glfwGetMouseButton(windowHandle, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS,
                 Component.translatable("iyc.key.mouse.right").getString(),
                 CpsSystem.getRightCps());
     }
