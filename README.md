@@ -27,23 +27,29 @@ This isn't just a nostalgic copy! This version has been **fully redesigned**. It
 
 ---
 
-## 🚀 Installation & Status
+## 🚀 Download & Installation
 
-**The 1.0.2 Release is now available!**
+**The 1.0.3 Release is now available!**
 
-1.  Download the latest `.jar` from the [Releases](https://github.com/Stylobow/ImagineYourCraft-1.21.1-NeoForge/releases) tab.
-2.  Install [NeoForge](https://neoforged.net/) for Minecraft 1.21.1 (21.1.216).
-3.  Place the mod file in your `%appdata%/.minecraft/mods` folder.
+You can download the mod from either **Modrinth** or **GitHub**:
+
+*   **Modrinth (Recommended):** [Download on Modrinth](https://modrinth.com/mod/imagine-your-craft)
+*   **GitHub Releases:** Download the latest `.jar` from the [Releases](https://github.com/Stylobow/ImagineYourCraft-1.21.1-NeoForge/releases) tab.
+
+### Setup Instructions:
+1.  Install [NeoForge](https://neoforged.net/) for Minecraft 1.21.1 (21.1.216).
+2.  Place the downloaded mod file in your `%appdata%/.minecraft/mods` folder.
 
 ![Status](https://img.shields.io/badge/Status-Released-brightgreen)
 ![Version](https://img.shields.io/badge/Minecraft-1.21.1-orange)
 ![Loader](https://img.shields.io/badge/Loader-NeoForge-blue)
+[![Modrinth](https://img.shields.io/badge/Available_on-Modrinth-00AF5C?style=flat&logo=modrinth)](https://modrinth.com/mod/imagine-your-craft)
 
 ---
 
 ## 🐞 Bug Reports & Feedback
 
-Even though the mod is in its stable version, bugs can happen! 
+Even though the mod is in its stable version, bugs can happen!
 
 If you encounter a crash, a glitch, or have a suggestion:
 *   **Open an Issue:** Use the "Issues" tab here on GitHub.
