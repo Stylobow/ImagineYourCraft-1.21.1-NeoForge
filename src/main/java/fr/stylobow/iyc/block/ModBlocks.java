@@ -1194,7 +1194,7 @@ public class ModBlocks {
     public static final DeferredItem<Item> CHERRY_CAKE_ITEM = ITEMS.register("cherry_cake",
             () -> new BlockItem(CHERRY_CAKE.get(), new Item.Properties().stacksTo(1)));
 
-    public static final DeferredBlock<Block> HIDDEN_DOOR = registerDoorBlock("hidden_door",
+    public static final DeferredBlock<Block> HIDDEN_DOOR = BLOCKS.register("hidden_door",
             () -> new HiddenDoorBlock(BlockBehaviour.Properties.of()
                     .strength(3.0F)
                     .sound(SoundType.STONE)

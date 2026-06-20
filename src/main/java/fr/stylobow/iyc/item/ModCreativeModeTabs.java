@@ -281,7 +281,7 @@ public static final DeferredRegister<CreativeModeTab>CREATIVE_MODE_TAB =
                         output.accept(ModBlocks.TRANSPARENT_LIGHT_BLOCK);
                         output.accept(ModBlocks.RED_BLOCK_CTF);
                         output.accept(ModBlocks.BLUE_BLOCK_CTF);
-                        output.accept(ModBlocks.HIDDEN_DOOR);
+                        output.accept(ModItems.HIDDEN_DOOR_ITEM);
                     }).build());
 
     public static final Supplier<CreativeModeTab>  IYC_MATERIALS_TAB = CREATIVE_MODE_TAB.register("iyc_materials_tab",

@@ -384,6 +384,10 @@ public class ModItems {
                     .saturationModifier(0f)
                     .build())));
 
+    public static final DeferredItem<Item> HIDDEN_DOOR_ITEM = ITEMS.register("hidden_door",
+            () -> new DoubleHighBlockItem(ModBlocks.HIDDEN_DOOR.get(), new Item.Properties())
+    );
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
