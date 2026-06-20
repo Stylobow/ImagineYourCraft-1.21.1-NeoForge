@@ -597,7 +597,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> EXPLOSION_EFFECT_GENERATOR = registerBlock("explosion_effect_generator",
             () -> new EffectGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE), ParticleTypes.EXPLOSION, 1));
     public static final DeferredBlock<Block> CLOUD_EFFECT_GENERATOR = registerBlock("cloud_effect_generator",
-            () -> new EffectGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE), ParticleTypes.CLOUD, 15));
+            () -> new EffectGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE), ParticleTypes.POOF, 15));
     public static final DeferredBlock<Block> LAVA_EFFECT_GENERATOR = registerBlock("lava_effect_generator",
             () -> new EffectGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE), ParticleTypes.LAVA, 1));
     public static final DeferredBlock<Block> WATER_EFFECT_GENERATOR = registerBlock("water_effect_generator",
