@@ -41,6 +41,7 @@ public static final DeferredRegister<CreativeModeTab>CREATIVE_MODE_TAB =
                         output.accept(ModBlocks.BAMBOO_LANTERN);
                         output.accept(ModBlocks.IRON_LANTERN);
                         output.accept(ModBlocks.JUMPBOX);
+                        output.accept(ModBlocks.SPEEDBOX);
                         output.accept(ModBlocks.LOG_STAIRS);
                         output.accept(ModBlocks.BOMBE);
                         output.accept(ModBlocks.OAK_REVERSED_PLANKS);
