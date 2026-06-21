@@ -3,15 +3,15 @@
   "category": "misc",
   "key": {
     "X": {
-      "item": "minecraft:brick_slab"
+      "item": "minecraft:bricks"
     },
     "F": {
-      "item": "minecraft:fire_charge"
+      "item": "minecraft:flint_and_steel"
     }
   },
   "pattern": [
-    "XFX",
-    "XXX"
+    "F",
+    "X"
   ],
   "result": {
     "count": 1,
