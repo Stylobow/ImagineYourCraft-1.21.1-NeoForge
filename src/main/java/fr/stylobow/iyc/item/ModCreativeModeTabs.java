@@ -30,6 +30,7 @@ public static final DeferredRegister<CreativeModeTab>CREATIVE_MODE_TAB =
                         output.accept(ModBlocks.CHERRY_PLANKS);
                         output.accept(ModBlocks.CHERRY_LOG);
                         output.accept(ModBlocks.CHERRY_LEAVES);
+                        output.accept(ModBlocks.CHERRY_SAPLING);
                         output.accept(ModBlocks.OAK_LANTERN);
                         output.accept(ModBlocks.SPRUCE_LANTERN);
                         output.accept(ModBlocks.BIRCH_LANTERN);

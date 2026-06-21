@@ -10,6 +10,7 @@ import fr.stylobow.iyc.block.custom.RodBlock;
 import fr.stylobow.iyc.event.ColorEvents;
 import fr.stylobow.iyc.item.ModItems;
 import fr.stylobow.iyc.worldgen.feature.LigniteFeature;
+import fr.stylobow.iyc.worldgen.tree.ModTreeGrowers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -381,6 +382,9 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> CHERRY_LEAVES = registerBlock("cherry_leaves",
             () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
+
+    public static final DeferredBlock<Block> CHERRY_SAPLING = registerBlock("cherry_sapling",
+            () -> new SaplingBlock(ModTreeGrowers.CHERRY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
 
     public static final DeferredBlock<Block> OAK_REVERSED_PLANKS = registerBlock("oak_reversed_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
