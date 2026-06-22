@@ -386,6 +386,9 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CHERRY_SAPLING = registerBlock("cherry_sapling",
             () -> new SaplingBlock(ModTreeGrowers.CHERRY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
 
+    public static final DeferredBlock<Block> POTTED_CHERRY_SAPLING = BLOCKS.register("potted_cherry_sapling",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, ModBlocks.CHERRY_SAPLING, BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_OAK_SAPLING)));
+
     public static final DeferredBlock<Block> OAK_REVERSED_PLANKS = registerBlock("oak_reversed_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
     public static final DeferredBlock<Block> SPRUCE_REVERSED_PLANKS = registerBlock("spruce_reversed_planks",

@@ -20,6 +20,7 @@ import fr.stylobow.iyc.sound.ModSounds;
 import fr.stylobow.iyc.worldgen.feature.ModFeatures;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -310,6 +311,8 @@ public class ImagineYourCraft {
             fireblock.setFlammable(ModBlocks.GREEN_LAMP.get(), 5, 20);
             fireblock.setFlammable(ModBlocks.RED_LAMP.get(), 5, 20);
             fireblock.setFlammable(ModBlocks.BLACK_LAMP.get(), 5, 20);
+
+            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.CHERRY_SAPLING.getId(), ModBlocks.POTTED_CHERRY_SAPLING);
         });
     }
 
@@ -332,6 +335,7 @@ public class ImagineYourCraft {
             IYCConfig.load();
             event.enqueueWork(() -> {
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHERRY_SAPLING.get(), RenderType.cutout());
+                ItemBlockRenderTypes.setRenderLayer(ModBlocks.POTTED_CHERRY_SAPLING.get(), RenderType.cutout());
             });
 
             EVENT_BUS.addListener(ClientModEvents::onClientTick);
