@@ -1,8 +1,13 @@
 {
   "feature": "iyc:saphir_ore",
   "placement": [
-    { "type": "minecraft:count", "count": 6 },
-    { "type": "minecraft:in_square" },
+    {
+      "type": "minecraft:count",
+      "count": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
     {
       "type": "minecraft:height_range",
       "height": {
@@ -11,6 +16,8 @@
         "min_inclusive": { "absolute": -64 }
       }
     },
-    { "type": "minecraft:biome" }
+    {
+      "type": "minecraft:biome"
+    }
   ]
 }
