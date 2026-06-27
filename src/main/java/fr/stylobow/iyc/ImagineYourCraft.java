@@ -12,6 +12,7 @@ import fr.stylobow.iyc.config.ModConfigs;
 import fr.stylobow.iyc.item.ModArmorMaterials;
 import fr.stylobow.iyc.item.ModCreativeModeTabs;
 import fr.stylobow.iyc.item.ModItems;
+import fr.stylobow.iyc.loot.ModLootModifiers;
 import fr.stylobow.iyc.network.SkinSyncPayload;
 import fr.stylobow.iyc.network.SyncTardisStatusPacket;
 import fr.stylobow.iyc.network.ToggleTardisPacket;
@@ -62,6 +63,7 @@ public class ImagineYourCraft {
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModSounds.register(modEventBus);
+        ModLootModifiers.register(modEventBus);
         ModArmorMaterials.ARMOR_MATERIALS.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModFeatures.FEATURES.register(modEventBus);
