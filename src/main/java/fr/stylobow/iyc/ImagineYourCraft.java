@@ -329,7 +329,7 @@ public class ImagineYourCraft {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {}
 
-    @EventBusSubscriber(modid = ImagineYourCraft.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     static class ClientModEvents {
 
         @SubscribeEvent
