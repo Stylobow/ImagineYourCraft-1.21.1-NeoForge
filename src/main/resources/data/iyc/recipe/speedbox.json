@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "P": { "item": "minecraft:piston" },
+    "S": { "item": "minecraft:sugar" },
+    "R": { "item": "minecraft:redstone" }
+  },
+  "pattern": [
+    "ISI",
+    "RPR",
+    "ISI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "iyc:speedbox"
+  }
+}
