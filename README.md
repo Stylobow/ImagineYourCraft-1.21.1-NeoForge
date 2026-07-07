@@ -29,7 +29,7 @@ This isn't just a nostalgic copy! This version has been **fully redesigned**. It
 
 ## 🚀 Download & Installation
 
-**The 1.0.3 Release is now available!**
+**The 1.0.4 Release is now available!**
 
 You can download the mod from either **Modrinth** or **GitHub**:
 
