@@ -36,7 +36,7 @@ public class BaguetteJauneItem extends Item {
             return InteractionResultHolder.fail(stack);
         }
 
-        player.getTags().add("iyc_jaune_fall_protected");
+        player.getTags().add("iyc_fall_protected");
 
         if (!level.isClientSide && level instanceof ServerLevel) {
             Vec3 currentMotion = player.getDeltaMovement();
@@ -70,7 +70,7 @@ public class BaguetteJauneItem extends Item {
                 return;
             }
 
-            player.getTags().add("iyc_jaune_fall_protected");
+            player.getTags().add("iyc_fall_protected");
             player.resetFallDistance();
 
             if (!level.isClientSide && level instanceof ServerLevel) {
@@ -94,11 +94,11 @@ public class BaguetteJauneItem extends Item {
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
         if (entity instanceof Player player) {
 
-            if (player.getTags().contains("iyc_jaune_fall_protected")) {
+            if (player.getTags().contains("iyc_fall_protected")) {
                 player.resetFallDistance();
 
                 if (player.onGround()) {
-                    player.getTags().remove("iyc_jaune_fall_protected");
+                    player.getTags().remove("iyc_fall_protected");
                 }
             }
 

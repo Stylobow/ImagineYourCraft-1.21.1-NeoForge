@@ -89,7 +89,15 @@ public class BaguetteVerteItem extends Item {
             List<Player> targetPlayers = level.getEntitiesOfClass(Player.class, effectBox);
 
             for (Player targetPlayer : targetPlayers) {
-                if (player.getTeam() != null && targetPlayer.isAlliedTo(player)) {
+                boolean shouldApply = false;
+
+                if (player.getTeam() == null) {
+                    shouldApply = (targetPlayer == player);
+                } else {
+                    shouldApply = targetPlayer.isAlliedTo(player);
+                }
+
+                if (shouldApply) {
                     targetPlayer.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 140, 3));
                     targetPlayer.heal(8.0F);
                 }
