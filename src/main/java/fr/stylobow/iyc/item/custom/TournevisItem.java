@@ -1,10 +1,10 @@
 package fr.stylobow.iyc.item.custom;
 
+import fr.stylobow.iyc.event.TaskScheduler;
 import fr.stylobow.iyc.world.gamerule.ModGameRules;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -27,6 +27,9 @@ import net.minecraft.world.phys.*;
 import java.util.List;
 
 public class TournevisItem extends Item {
+
+    public static final int RIGHT_CLICK_COOLDOWN_TICKS = 30;
+    public static final int LEFT_CLICK_COOLDOWN_TICKS = 140;
 
     public TournevisItem(Properties properties) {
         super(properties);
@@ -86,13 +89,15 @@ public class TournevisItem extends Item {
             List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, damageBox);
 
             for (LivingEntity target : targets) {
-                target.hurt(level.damageSources().fireworks(null, player), 7.5f);
+                if (target != player) {
+                    target.hurt(level.damageSources().fireworks(null, player), 7.5f);
+                }
             }
 
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundSource.PLAYERS, 1.0f, 1.0f);
 
-            player.getCooldowns().addCooldown(this, 30);
+            player.getCooldowns().addCooldown(this, RIGHT_CLICK_COOLDOWN_TICKS);
 
             ItemStack stack = player.getItemInHand(hand);
             if (player instanceof ServerPlayer serverPlayer) {
@@ -103,6 +108,55 @@ public class TournevisItem extends Item {
         }
 
         return InteractionResultHolder.success(player.getItemInHand(hand));
+    }
+
+    public void performTeleport(ServerPlayer player, ItemStack stack) {
+        ServerLevel serverLevel = player.serverLevel();
+
+        if (!serverLevel.getGameRules().getBoolean(ModGameRules.ALLOW_SPECIAL_ITEMS)) {
+            return;
+        }
+
+        if (player.getCooldowns().isOnCooldown(this)) {
+            return;
+        }
+
+        player.getCooldowns().addCooldown(this, LEFT_CLICK_COOLDOWN_TICKS);
+
+        stack.hurtAndBreak(1, serverLevel, player,
+                item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND))
+        );
+
+        Vec3 startPos = player.getEyePosition();
+        Vec3 lookVec = player.getLookAngle();
+        double maxDistance = 75.0D;
+        Vec3 endPos = startPos.add(lookVec.scale(maxDistance));
+
+        BlockHitResult blockHit = serverLevel.clip(new ClipContext(
+                startPos,
+                endPos,
+                ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
+                player
+        ));
+
+        Vec3 targetTpPos = blockHit.getType() != HitResult.Type.MISS ? blockHit.getLocation() : endPos;
+
+        double distance = startPos.distanceTo(targetTpPos);
+        for (double i = 0; i < distance; i += 0.5) {
+            Vec3 particlePos = startPos.add(lookVec.scale(i));
+            serverLevel.sendParticles(ParticleTypes.FIREWORK,
+                    particlePos.x, particlePos.y, particlePos.z,
+                    1, 0, 0, 0, 0);
+        }
+
+        TaskScheduler.schedule(10, () -> {
+            if (player.isAlive() && !player.hasDisconnected()) {
+                player.teleportTo(targetTpPos.x, targetTpPos.y, targetTpPos.z);
+                player.addTag("iyc_fall_protected");
+                player.fallDistance = 0.0F;
+            }
+        });
     }
 
     private void createFirework(Level level, Vec3 pos) {
@@ -123,5 +177,13 @@ public class TournevisItem extends Item {
         level.addFreshEntity(rocketEntity);
         level.broadcastEntityEvent(rocketEntity, (byte) 17);
         rocketEntity.discard();
+    }
+
+    @Override
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+        if (entity instanceof ServerPlayer serverPlayer) {
+            performTeleport(serverPlayer, stack);
+        }
+        return false;
     }
 }
