@@ -307,6 +307,7 @@
   "block.iyc.large_smoke_effect_generator": "Bloc à particules de fumée épaisse",
   "block.iyc.heart_effect_generator": "Bloc à particules de cœur",
   "block.iyc.transparent_light_block": "Bloc transparent éclairant",
+  "block.iyc.redstone_lamp_always": "Lampe à redstone",
   "block.iyc.red_block_ctf": "Bloc de CTF rouge",
   "block.iyc.blue_block_ctf": "Bloc de CTF bleu",
   "block.iyc.hidden_door": "Porte cachée",

@@ -1194,6 +1194,15 @@ public class ModBlocks {
             )
     );
 
+    public static final DeferredBlock<Block> REDSTONE_LAMP_ALWAYS = registerBlock("redstone_lamp_always",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .lightLevel(p_152686_ -> 15)
+                    .strength(0.3F)
+                    .sound(SoundType.GLASS)
+                    .isValidSpawn(Blocks::always)
+            )
+    );
+
     public static final DeferredBlock<Block> STEEL_BREWING_STAND = registerBlock("steel_brewing_stand",
             () -> new SteelBrewingStandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BREWING_STAND)));
 
