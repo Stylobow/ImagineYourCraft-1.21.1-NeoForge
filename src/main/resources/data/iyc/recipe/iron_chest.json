@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "minecraft:chest"
+    }
+  },
+  "pattern": [
+    "XXX",
+    "XFX",
+    "XXX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "iyc:iron_chest"
+  }
+}

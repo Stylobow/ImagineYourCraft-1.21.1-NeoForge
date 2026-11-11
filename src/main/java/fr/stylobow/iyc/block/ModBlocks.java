@@ -550,7 +550,10 @@ public class ModBlocks {
             () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS)));
 
     public static final DeferredBlock<Block> IRON_FURNACE = registerBlock("iron_furnace",
-            () -> new IronFurnaceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE).strength(4.0F).requiresCorrectToolForDrops()));
+            () -> new IronFurnaceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE).strength(4.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)));
+
+    public static final DeferredBlock<Block> IRON_CHEST = registerBlock("iron_chest",
+            () -> new IronChestBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST).strength(4.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)));
 
     public static final DeferredBlock<Block> BARREL = registerBlock("barrel",
             () -> new BarrelBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL).noOcclusion()));
@@ -1215,7 +1218,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> HIDDEN_DOOR = BLOCKS.register("hidden_door",
             () -> new HiddenDoorBlock(BlockBehaviour.Properties.of()
                     .strength(3.0F)
-                    .sound(SoundType.STONE)
+                    .sound(SoundType.GLASS)
                     .noOcclusion()
                     .dynamicShape()
                     .pushReaction(PushReaction.DESTROY)

@@ -44,6 +44,7 @@
   "iyc.music.done": "Done",
   "iyc.menu.barrel": "Barrel",
   "container.iyc.iron_furnace": "Iron Furnace",
+  "container.iyc.iron_chest": "Iron Chest",
   "container.iyc.steel_brewing_stand": "Steel Brewing Stand",
 
   "creative.iyc.blocks": "Blocks of IYC",
@@ -498,6 +499,7 @@
   "block.iyc.glowstone_pressure_plate": "Glowstone Pressure Plate",
   "block.iyc.clear_glass": "IYC Glass",
   "block.iyc.iron_furnace": "Iron Furnace",
+  "block.iyc.iron_chest": "Iron Chest",
   "block.iyc.oak_shelf": "Oak Shelf",
   "block.iyc.spruce_shelf": "Spruce Shelf",
   "block.iyc.birch_shelf": "Birch Shelf",

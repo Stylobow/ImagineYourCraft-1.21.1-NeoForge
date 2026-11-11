@@ -8,6 +8,7 @@ import fr.stylobow.iyc.block.entity.ModEntities;
 import fr.stylobow.iyc.client.audio.RadioManager;
 import fr.stylobow.iyc.client.config.IYCConfig;
 import fr.stylobow.iyc.client.event.IronLadderHandler;
+import fr.stylobow.iyc.client.renderer.IronChestRenderer;
 import fr.stylobow.iyc.config.ModConfigs;
 import fr.stylobow.iyc.item.ModArmorMaterials;
 import fr.stylobow.iyc.item.ModCreativeModeTabs;
@@ -348,6 +349,7 @@ public class ImagineYourCraft {
         @SubscribeEvent
         static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(ModEntities.CHAIR_ENTITY.get(), ChairRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.IRON_CHEST_BE.get(), IronChestRenderer::new);
         }
         private static void onClientTick(ClientTickEvent.Post event) {
             RadioManager.tickIycRadio();

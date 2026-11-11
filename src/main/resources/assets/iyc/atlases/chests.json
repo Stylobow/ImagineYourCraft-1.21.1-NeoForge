@@ -1,0 +1,8 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "iyc:entity/chest/iron_chest"
+    }
+  ]
+}

@@ -25,6 +25,9 @@ public class ModBlockEntities {
     public static final Supplier<BlockEntityType<IronFurnaceBlockEntity>> IRON_FURNACE_BE = BLOCK_ENTITIES.register("iron_furnace",
             () -> BlockEntityType.Builder.of(IronFurnaceBlockEntity::new, ModBlocks.IRON_FURNACE.get()).build(null));
 
+    public static final Supplier<BlockEntityType<IronChestBlockEntity>> IRON_CHEST_BE = BLOCK_ENTITIES.register("iron_chest",
+            () -> BlockEntityType.Builder.of(IronChestBlockEntity::new, ModBlocks.IRON_CHEST.get()).build(null));
+
     public static final Supplier<BlockEntityType<SteelBrewingStandBlockEntity>> STEEL_BREWING_STAND_BE = BLOCK_ENTITIES.register("steel_brewing_stand",
             () -> BlockEntityType.Builder.of(SteelBrewingStandBlockEntity::new, ModBlocks.STEEL_BREWING_STAND.get()).build(null));
 

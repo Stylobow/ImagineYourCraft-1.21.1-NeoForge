@@ -1,14 +1,17 @@
 package fr.stylobow.iyc.client;
 
 import fr.stylobow.iyc.ImagineYourCraft;
+import fr.stylobow.iyc.block.ModBlocks;
 import fr.stylobow.iyc.block.entity.ModEntities;
 import fr.stylobow.iyc.client.model.HiddenDoorBakedModel;
 import fr.stylobow.iyc.client.renderer.BombeRenderer;
 import fr.stylobow.iyc.client.renderer.FloatingItemLayer;
+import fr.stylobow.iyc.client.renderer.IronChestItemRenderer;
 import fr.stylobow.iyc.screen.BarrelScreen;
 import fr.stylobow.iyc.screen.ModMenuTypes;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.model.BakedModel;
@@ -19,6 +22,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 import java.util.List;
 import java.util.Map;
@@ -56,6 +61,16 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.BARREL_MENU.get(), BarrelScreen::new);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerItem(new IClientItemExtensions() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return IronChestItemRenderer.INSTANCE;
+            }
+        }, ModBlocks.IRON_CHEST.get().asItem());
     }
 
     @SubscribeEvent

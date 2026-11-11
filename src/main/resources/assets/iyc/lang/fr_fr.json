@@ -44,6 +44,7 @@
   "iyc.music.done": "Terminé",
   "iyc.menu.barrel": "Tonneau",
   "container.iyc.iron_furnace": "Four en fer",
+  "container.iyc.iron_chest": "Coffre en fer",
   "container.iyc.steel_brewing_stand": "Alambic en acier",
 
   "creative.iyc.blocks": "Blocs d'IYC",
@@ -498,6 +499,7 @@
   "block.iyc.glowstone_pressure_plate": "Plaque de pression lumineuse",
   "block.iyc.clear_glass": "Verre d'IYC",
   "block.iyc.iron_furnace": "Four en fer",
+  "block.iyc.iron_chest": "Coffre en fer",
   "block.iyc.oak_shelf": "Étagère en chêne",
   "block.iyc.spruce_shelf": "Étagère en sapin",
   "block.iyc.birch_shelf": "Étagère en bouleau",
