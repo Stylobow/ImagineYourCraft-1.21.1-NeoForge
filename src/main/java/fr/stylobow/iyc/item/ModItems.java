@@ -253,6 +253,8 @@ public class ModItems {
             () -> new IYCCrossbowItem(new Item.Properties().stacksTo(1).durability(500)));
     public static final DeferredItem<Item> BOLT = ITEMS.register("bolt",
             () -> new ArrowItem(new Item.Properties()));
+    public static final DeferredItem<Item> TIPPED_BOLT = ITEMS.register("tipped_bolt",
+            () -> new TippedBoltItem(new Item.Properties()));
 
     public static final DeferredItem<Item> REDBULL = ITEMS.register("redbull",
             () -> new Item(new Item.Properties().stacksTo(1).food(new FoodProperties.Builder()

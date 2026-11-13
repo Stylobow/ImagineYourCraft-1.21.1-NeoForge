@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -562,6 +563,12 @@ public static final DeferredRegister<CreativeModeTab>CREATIVE_MODE_TAB =
                         output.accept(ModItems.EMERALD_CHESTPLATE);
                         output.accept(ModItems.EMERALD_LEGGINGS);
                         output.accept(ModItems.EMERALD_BOOTS);
+                        parameters.holders().lookup(Registries.POTION).ifPresent(potions -> {
+                            potions.listElements()
+                                    .filter(potion -> potion.value().isEnabled(parameters.enabledFeatures()))
+                                    .map(potion -> PotionContents.createItemStack(ModItems.TIPPED_BOLT.get(), potion))
+                                    .forEach(output::accept);
+                        });
                     }).build());
 
     public static final Supplier<CreativeModeTab>  IYC_TOOLS_TAB = CREATIVE_MODE_TAB.register("iyc_tools_tab",

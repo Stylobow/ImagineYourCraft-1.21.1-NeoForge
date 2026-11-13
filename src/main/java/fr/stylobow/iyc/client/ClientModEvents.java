@@ -7,6 +7,7 @@ import fr.stylobow.iyc.client.model.HiddenDoorBakedModel;
 import fr.stylobow.iyc.client.renderer.BombeRenderer;
 import fr.stylobow.iyc.client.renderer.FloatingItemLayer;
 import fr.stylobow.iyc.client.renderer.IronChestItemRenderer;
+import fr.stylobow.iyc.item.ModItems;
 import fr.stylobow.iyc.screen.BarrelScreen;
 import fr.stylobow.iyc.screen.ModMenuTypes;
 import net.minecraft.client.model.PlayerModel;
@@ -16,11 +17,15 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.util.FastColor;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
@@ -71,6 +76,16 @@ public class ClientModEvents {
                 return IronChestItemRenderer.INSTANCE;
             }
         }, ModBlocks.IRON_CHEST.get().asItem());
+    }
+
+    @SubscribeEvent
+    public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+        event.register(
+                (stack, tintIndex) -> tintIndex == 0
+                        ? FastColor.ARGB32.opaque(stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor())
+                        : -1,
+                ModItems.TIPPED_BOLT.get()
+        );
     }
 
     @SubscribeEvent

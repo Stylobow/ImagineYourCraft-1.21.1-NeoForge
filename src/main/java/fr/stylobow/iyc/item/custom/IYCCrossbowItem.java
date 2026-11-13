@@ -12,18 +12,25 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public class IYCCrossbowItem extends CrossbowItem {
+    public static final Predicate<ItemStack> BOLTS_ONLY = stack -> stack.is(ModItems.BOLT.get()) || stack.is(ModItems.TIPPED_BOLT.get());
+
     public IYCCrossbowItem(Properties properties) {
         super(properties);
     }
 
     @Override
     public Predicate<ItemStack> getAllSupportedProjectiles() {
-        return stack -> stack.is(ModItems.BOLT.get());
+        return BOLTS_ONLY;
+    }
+
+    @Override
+    public Predicate<ItemStack> getSupportedHeldProjectiles() {
+        return BOLTS_ONLY;
     }
 
     @Override
     protected Projectile createProjectile(Level level, LivingEntity shooter, ItemStack weapon, ItemStack ammo, boolean isCrit) {
-        BoltEntity bolt = new BoltEntity(level, shooter, ammo.copyWithCount(1));
+        BoltEntity bolt = new BoltEntity(level, shooter, ammo.copyWithCount(1), weapon);
 
         if (isCrit) {
             bolt.setCritArrow(true);
