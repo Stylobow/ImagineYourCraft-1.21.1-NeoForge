@@ -50,8 +50,8 @@ public class SaphirArmorItem extends ArmorItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(
-                Component.literal("Set magique: ").withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC).
-                        append(Component.literal("Apnée").withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC))
+                Component.translatable("iyc.armor.magic_set").withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC).
+                        append(Component.translatable("effect.minecraft.water_breathing").withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC))
         );
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }

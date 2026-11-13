@@ -31,6 +31,7 @@
   "iyc.button.reset_hat": "Réinitialiser le chapeau",
   "iyc.error.format": "Format invalide (%s) !",
   "iyc.error.corrupt": "Fichier image corrompu !",
+  "iyc.armor.magic_set": "Set magique: ",
   "gamerule.allowSpecialItems": "Utilisation des objets spéciaux (IYC)",
 
   "entity.iyc.bolt": "Carreau",

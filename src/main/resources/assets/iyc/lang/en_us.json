@@ -31,6 +31,7 @@
   "iyc.button.reset_hat": "Reset Hat",
   "iyc.error.format": "Invalid Format (%s)!",
   "iyc.error.corrupt": "Corrupted image file!",
+  "iyc.armor.magic_set": "Magic Set: ",
   "gamerule.allowSpecialItems": "Use special items (IYC)",
 
   "entity.iyc.bolt": "Bolt",
