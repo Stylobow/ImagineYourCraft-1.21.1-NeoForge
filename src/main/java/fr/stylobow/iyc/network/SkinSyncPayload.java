@@ -110,7 +110,9 @@ public record SkinSyncPayload(UUID playerId, int cosmeticType, String textureUrl
 
             if (context.flow().isClientbound()) {
                 if (payload.cosmeticType() == 0) {
-                    SkinRenderManager.registerPlayerSkin(payload.playerId(), url);
+                    if (url.startsWith("http://") || url.startsWith("https://")) {
+                        SkinRenderManager.registerPlayerSkin(payload.playerId(), url);
+                    }
                     CustomSkinManager.registerRemoteCosmetic(payload.playerId(), 0, url);
                 } else if (payload.cosmeticType() == 1) {
                     CustomSkinManager.registerRemoteCosmetic(payload.playerId(), 1, url);

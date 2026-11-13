@@ -15,6 +15,7 @@ public class SkinRenderManager {
 
     public static void registerPlayerSkin(UUID playerId, String url) {
         if (url == null || url.isEmpty()) return;
+        if (!url.startsWith("http://") && !url.startsWith("https://")) return;
 
         ResourceLocation location = ResourceLocation.fromNamespaceAndPath("iyc", "skins/" + playerId);
         File cacheFile = new File(Minecraft.getInstance().gameDirectory, "assets/skins/" + playerId + ".png");

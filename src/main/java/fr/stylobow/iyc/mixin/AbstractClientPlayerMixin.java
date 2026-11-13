@@ -15,7 +15,10 @@ public abstract class AbstractClientPlayerMixin {
     @Inject(method = "getSkinTextureLocation", at = @At("HEAD"), cancellable = true)
     private void injectCustomSkin(CallbackInfoReturnable<ResourceLocation> info) {
         AbstractClientPlayer player = (AbstractClientPlayer) (Object) this;
-        ResourceLocation customSkin = SkinRenderManager.getPlayerSkin(player.getUUID());
+        ResourceLocation customSkin = CustomSkinManager.getSkinTexture(player.getUUID());
+        if (customSkin == null) {
+            customSkin = SkinRenderManager.getPlayerSkin(player.getUUID());
+        }
 
         if (customSkin != null) {
             info.setReturnValue(customSkin);

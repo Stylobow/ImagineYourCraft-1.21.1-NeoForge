@@ -364,6 +364,10 @@ public class CustomSkinManager {
         }
     }
 
+    public static ResourceLocation getSkinTexture(UUID playerId) {
+        return playerSkins.get(playerId);
+    }
+
     public static ResourceLocation getCapeTexture(UUID playerId) {
         return playerCapes.get(playerId);
     }
