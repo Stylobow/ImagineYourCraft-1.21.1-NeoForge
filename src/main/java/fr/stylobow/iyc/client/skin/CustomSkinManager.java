@@ -46,7 +46,8 @@ public class CustomSkinManager {
                 loadedSkinPath = "";
                 loadedCapePath = "";
                 loadedHatPath = "";
-                applySkin();
+                loadedSkinPath = "";
+        applySkin();
                 applyCape();
                 applyHat();
             });
@@ -146,6 +147,21 @@ public class CustomSkinManager {
         receiveSkinPacket(playerId, cosmeticType, url);
     }
 
+    public static void forceApplySkin() {
+        loadedSkinPath = "";
+        applySkin();
+    }
+
+    public static void forceApplyCape() {
+        loadedCapePath = "";
+        applyCape();
+    }
+
+    public static void forceApplyHat() {
+        loadedHatPath = "";
+        applyHat();
+    }
+
     public static void applySkin() {
         String path = IYCConfig.data.customSkinPath;
         if (path == null || path.isEmpty()) return;
@@ -161,19 +177,18 @@ public class CustomSkinManager {
                 try (InputStream is = new ByteArrayInputStream(imageData)) {
                     NativeImage image = NativeImage.read(is);
 
-                    image = convertLegacySkin(image);
+                    NativeImage finalImage = convertLegacySkin(image);
 
-                    int width = image.getWidth();
-                    int height = image.getHeight();
+                    int width = finalImage.getWidth();
+                    int height = finalImage.getHeight();
                     if (!(width % 64 == 0) || height != width) {
-                        image.close();
+                        finalImage.close();
                         return;
                     }
 
-                    DynamicTexture texture = new DynamicTexture(image);
-                    ResourceLocation rl = ResourceLocation.fromNamespaceAndPath("iyc", "custom_skin_" + mc.player.getUUID() + "_" + System.currentTimeMillis());
-
                     mc.execute(() -> {
+                        DynamicTexture texture = new DynamicTexture(finalImage);
+                        ResourceLocation rl = ResourceLocation.fromNamespaceAndPath("iyc", "custom_skin_" + mc.player.getUUID() + "_" + System.currentTimeMillis());
                         mc.getTextureManager().register(rl, texture);
                         playerSkins.put(mc.player.getUUID(), rl);
                         loadedSkinPath = path;
@@ -203,10 +218,9 @@ public class CustomSkinManager {
 
                 try (InputStream is = new ByteArrayInputStream(imageData)) {
                     NativeImage image = NativeImage.read(is);
-                    DynamicTexture texture = new DynamicTexture(image);
-                    ResourceLocation rl = ResourceLocation.fromNamespaceAndPath("iyc", "custom_cape_" + mc.player.getUUID() + "_" + System.currentTimeMillis());
-
                     mc.execute(() -> {
+                        DynamicTexture texture = new DynamicTexture(image);
+                        ResourceLocation rl = ResourceLocation.fromNamespaceAndPath("iyc", "custom_cape_" + mc.player.getUUID() + "_" + System.currentTimeMillis());
                         mc.getTextureManager().register(rl, texture);
                         playerCapes.put(mc.player.getUUID(), rl);
                         loadedCapePath = path;
@@ -236,10 +250,9 @@ public class CustomSkinManager {
 
                 try (InputStream is = new ByteArrayInputStream(imageData)) {
                     NativeImage image = NativeImage.read(is);
-                    DynamicTexture texture = new DynamicTexture(image);
-                    ResourceLocation rl = ResourceLocation.fromNamespaceAndPath("iyc", "custom_hat_" + mc.player.getUUID() + "_" + System.currentTimeMillis());
-
                     mc.execute(() -> {
+                        DynamicTexture texture = new DynamicTexture(image);
+                        ResourceLocation rl = ResourceLocation.fromNamespaceAndPath("iyc", "custom_hat_" + mc.player.getUUID() + "_" + System.currentTimeMillis());
                         mc.getTextureManager().register(rl, texture);
                         playerHats.put(mc.player.getUUID(), rl);
                         loadedHatPath = path;

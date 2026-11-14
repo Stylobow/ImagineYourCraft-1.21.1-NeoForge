@@ -12,13 +12,12 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.MemoryStack;
-import org.lwjgl.util.tinyfd.TinyFileDialogs;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class CustomScreen extends Screen {
@@ -100,13 +99,22 @@ public class CustomScreen extends Screen {
 
     private void openFileChooser(int cosmeticType) {
         new Thread(() -> {
-            try (MemoryStack stack = MemoryStack.stackPush()) {
-                PointerBuffer filters = stack.mallocPointer(1);
-                filters.put(stack.UTF8("*.png"));
-                filters.flip();
-
+            try {
                 String title = cosmeticType == 1 ? "Choose a Cape" : (cosmeticType == 2 ? "Choose a Hat" : "Choose a Skin");
-                String result = TinyFileDialogs.tinyfd_openFileDialog(title, "", filters, "Images PNG", false);
+                String command = "Add-Type -AssemblyName System.Windows.Forms; $f = New-Object System.Windows.Forms.OpenFileDialog; $f.Title = '" + title + "'; $f.Filter = 'Images PNG (*.png)|*.png'; if ($f.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) { Write-Output $f.FileName }";
+
+                ProcessBuilder pb = new ProcessBuilder("powershell", "-NoProfile", "-Command", command);
+                pb.redirectErrorStream(true);
+                Process process = pb.start();
+
+                String result = null;
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
+                    String line = reader.readLine();
+                    if (line != null && !line.trim().isEmpty()) {
+                        result = line.trim();
+                    }
+                }
+                process.waitFor();
 
                 if (result != null) {
                     File file = new File(result);
@@ -142,18 +150,11 @@ public class CustomScreen extends Screen {
                         this.minecraft.execute(() -> {
                             this.errorMessage = "";
                             if (cosmeticType == 2) {
-                                CustomSkinManager.applyHat();
+                                CustomSkinManager.forceApplyHat();
+                            } else if (cosmeticType == 1) {
+                                CustomSkinManager.forceApplyCape();
                             } else {
-                                if (cosmeticType == 1) CustomSkinManager.applyCape();
-                                else CustomSkinManager.applySkin();
-
-                                SkinUploader.uploadSkin(file).thenAccept(url -> {
-                                    if (this.minecraft != null) {
-                                        this.minecraft.execute(() -> this.errorMessage = "");
-                                    }
-                                }).exceptionally(e -> {
-                                    return null;
-                                });
+                                CustomSkinManager.forceApplySkin();
                             }
                         });
                     }
