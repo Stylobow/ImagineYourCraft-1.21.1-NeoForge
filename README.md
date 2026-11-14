@@ -29,7 +29,7 @@ This isn't just a nostalgic copy! This version has been **fully redesigned**. It
 
 ## 🚀 Download & Installation
 
-**The 1.0.4 Release is now available!**
+**The 1.0.5 Release is now available!**
 
 You can download the mod from either **Modrinth** or **GitHub**:
 
@@ -37,7 +37,7 @@ You can download the mod from either **Modrinth** or **GitHub**:
 *   **GitHub Releases:** Download the latest `.jar` from the [Releases](https://github.com/Stylobow/ImagineYourCraft-1.21.1-NeoForge/releases) tab.
 
 ### Setup Instructions:
-1.  Install [NeoForge](https://neoforged.net/) for Minecraft 1.21.1 (21.1.216).
+1.  Install [NeoForge](https://neoforged.net/) for Minecraft 1.21.1.
 2.  Place the downloaded mod file in your `%appdata%/.minecraft/mods` folder.
 
 ![Status](https://img.shields.io/badge/Status-Released-brightgreen)
